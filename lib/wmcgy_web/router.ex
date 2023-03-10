@@ -17,12 +17,6 @@ defmodule WmcgyWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", WmcgyWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", WmcgyWeb do
   #   pipe_through :api
@@ -66,6 +60,10 @@ defmodule WmcgyWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{WmcgyWeb.UserAuth, :ensure_authenticated}] do
+      # Transactions routes
+      live "/", TransactionLive.Index, :index
+
+      # Account routes
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

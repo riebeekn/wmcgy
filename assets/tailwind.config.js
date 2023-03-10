@@ -9,9 +9,6 @@ module.exports = {
   content: ["./js/**/*.js", "../lib/*_web.ex", "../lib/*_web/**/*.*ex"],
   theme: {
     extend: {
-      colors: {
-        brand: "#FD4F00",
-      },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
         lobster: ["Lobster"],
