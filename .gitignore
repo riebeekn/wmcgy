@@ -35,3 +35,8 @@ wmcgy-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore local .iex file
+.iex.exs
+
+# Ignore .tool-versions
+.tool-versions
