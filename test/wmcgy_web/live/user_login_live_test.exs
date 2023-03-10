@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.UserLoginLiveTest do
-  use WmcgyWeb.ConnCase
+  use WmcgyWebTest.ConnCase
 
   import Phoenix.LiveViewTest
   import Wmcgy.AccountsFixtures

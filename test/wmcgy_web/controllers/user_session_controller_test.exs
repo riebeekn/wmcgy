@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.UserSessionControllerTest do
-  use WmcgyWeb.ConnCase, async: true
+  use WmcgyWebTest.ConnCase, async: true
 
   import Wmcgy.AccountsFixtures
 

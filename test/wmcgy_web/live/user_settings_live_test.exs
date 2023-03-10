@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.UserSettingsLiveTest do
-  use WmcgyWeb.ConnCase
+  use WmcgyWebTest.ConnCase
 
   alias Wmcgy.Accounts
   import Phoenix.LiveViewTest

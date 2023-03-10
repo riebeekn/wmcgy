@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.UserResetPasswordLiveTest do
-  use WmcgyWeb.ConnCase
+  use WmcgyWebTest.ConnCase
 
   import Phoenix.LiveViewTest
   import Wmcgy.AccountsFixtures

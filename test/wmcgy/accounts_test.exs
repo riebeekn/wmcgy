@@ -1,5 +1,5 @@
 defmodule Wmcgy.AccountsTest do
-  use Wmcgy.DataCase
+  use WmcgyTest.DataCase
 
   alias Wmcgy.Accounts
 

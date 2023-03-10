@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.UserAuthTest do
-  use WmcgyWeb.ConnCase, async: true
+  use WmcgyWebTest.ConnCase, async: true
 
   alias Phoenix.LiveView
   alias Wmcgy.Accounts
