@@ -64,7 +64,8 @@ defmodule Wmcgy.MixProject do
       {:boundary, "~> 0.9.0", runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
-      {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false}
+      {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false},
+      {:faker, "~> 0.16", only: [:dev, :test]}
     ]
   end
 
