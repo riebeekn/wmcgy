@@ -5,6 +5,8 @@ defmodule Wmcgy.Application do
 
   use Application
 
+  use Boundary, top_level?: true, deps: [Wmcgy, WmcgyWeb]
+
   @impl true
   def start(_type, _args) do
     children = [

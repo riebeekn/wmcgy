@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.ErrorHTMLTest do
-  use WmcgyWeb.ConnCase, async: true
+  use WmcgyWebTest.ConnCase, async: true
 
   # Bring render_to_string/4 for testing custom views
   import Phoenix.Template

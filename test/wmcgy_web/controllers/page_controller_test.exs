@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.PageControllerTest do
-  use WmcgyWeb.ConnCase
+  use WmcgyWebTest.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

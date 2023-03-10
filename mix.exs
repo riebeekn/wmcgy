@@ -9,7 +9,15 @@ defmodule Wmcgy.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      compilers: [:boundary] ++ Mix.compilers(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -49,7 +57,12 @@ defmodule Wmcgy.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.14", only: [:dev, :test], runtime: false},
+      {:boundary, "~> 0.9.0", runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 
@@ -67,7 +80,8 @@ defmodule Wmcgy.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      check: ["format", "credo --strict", "compile --warnings-as-errors", "dialyzer", "docs"]
     ]
   end
 end

@@ -1,5 +1,5 @@
 defmodule WmcgyWeb.ErrorJSONTest do
-  use WmcgyWeb.ConnCase, async: true
+  use WmcgyWebTest.ConnCase, async: true
 
   test "renders 404" do
     assert WmcgyWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
