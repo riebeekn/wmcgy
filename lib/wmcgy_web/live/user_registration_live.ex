@@ -7,11 +7,12 @@ defmodule WmcgyWeb.UserRegistrationLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
+      <.logo />
       <.header class="text-center">
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/users/log_in"} class="font-semibold text-emerald-700 hover:underline">
             Sign in
           </.link>
           to your account now.

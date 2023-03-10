@@ -4,11 +4,12 @@ defmodule WmcgyWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
+      <.logo />
       <.header class="text-center">
         Sign in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/users/register"} class="font-semibold text-emerald-700 hover:underline">
             Sign up
           </.link>
           for an account now.
@@ -21,7 +22,10 @@ defmodule WmcgyWeb.UserLoginLive do
 
         <:actions>
           <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-          <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
+          <.link
+            href={~p"/users/reset_password"}
+            class="text-sm font-semibold text-emerald-700 hover:underline"
+          >
             Forgot your password?
           </.link>
         </:actions>

@@ -88,6 +88,8 @@ defmodule WmcgyWeb do
       # Core UI components and translation
       import WmcgyWeb.CoreComponents
       import WmcgyWeb.Gettext
+      # Custom UI components
+      import WmcgyWeb.CustomComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
