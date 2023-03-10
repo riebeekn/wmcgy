@@ -42,7 +42,12 @@
           "lib/wmcgy_web/controllers/error_json.ex",
           "lib/wmcgy_web/controllers/error_html.ex",
           "lib/wmcgy_web/components/layouts.ex",
-          "lib/wmcgy/mailer.ex"
+          "lib/wmcgy/mailer.ex",
+          "lib/wmcgy_web/user_auth.ex",
+          "lib/wmcgy/accounts/user_token.ex",
+          "lib/wmcgy/accounts/user.ex",
+          "lib/wmcgy/accounts/user_notifier.ex",
+          "lib/wmcgy/accounts.ex"
         ]
       },
       #
