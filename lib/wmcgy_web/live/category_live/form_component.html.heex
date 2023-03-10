@@ -1,0 +1,12 @@
+<div>
+  <.header>
+    <%= @title %>
+  </.header>
+
+  <.simple_form for={@form} id="category-form" phx-target={@myself} phx-submit="save">
+    <.input field={@form[:name]} type="text" label="Name" />
+    <:actions>
+      <.button phx-disable-with="Saving...">Save Category</.button>
+    </:actions>
+  </.simple_form>
+</div>

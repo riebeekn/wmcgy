@@ -17,7 +17,7 @@ defmodule WmcgyWeb do
   those modules here.
   """
 
-  use Boundary, deps: [Wmcgy], exports: [Endpoint]
+  use Boundary, deps: [Wmcgy, WmcgySchema, WmcgyUtilities], exports: [Endpoint]
 
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
