@@ -6,7 +6,7 @@ defmodule Wmcgy do
   use Boundary, deps: [WmcgySchema], exports: [Accounts, Accounts.User]
 
   alias Wmcgy.Accounts.User
-  alias WmcgySchema.Category
+  alias WmcgySchema.{Category, Transaction}
 
   # ===========================================================================
   # Category specific functions
@@ -28,4 +28,25 @@ defmodule Wmcgy do
   @spec delete_category(user :: User.t(), id :: pos_integer) ::
           {:ok, Category.t()} | {:error, Ecto.Changeset.t()}
   defdelegate delete_category(user, id), to: Wmcgy.Categories
+
+  # ===========================================================================
+  # Transaction specific functions
+  # ===========================================================================
+  @type sort_dir :: :desc | :asc
+  @type transaction_sort_fields :: :date | :category | :description | :amount
+
+  @type transaction_list_opts ::
+          {:page, pos_integer()}
+          | {:page_size, pos_integer()}
+          | {:sort_field, transaction_sort_fields}
+          | {:sort_dir, sort_dir}
+  @spec list_transactions(user :: User.t(), opts :: list(transaction_list_opts)) ::
+          Scrivener.Page.t(%{
+            entries: list(Transaction.t()),
+            page_number: pos_integer(),
+            page_size: pos_integer(),
+            total_entries: pos_integer(),
+            total_pages: pos_integer()
+          })
+  defdelegate list_transactions(user, opts \\ []), to: Wmcgy.Transactions
 end
