@@ -3,7 +3,7 @@ defmodule WmcgyWeb.UserSettingsLiveTest do
 
   alias Wmcgy.Accounts
   import Phoenix.LiveViewTest
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

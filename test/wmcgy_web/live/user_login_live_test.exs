@@ -2,7 +2,7 @@ defmodule WmcgyWeb.UserLoginLiveTest do
   use WmcgyWebTest.ConnCase
 
   import Phoenix.LiveViewTest
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   describe "Log in page" do
     test "renders log in page", %{conn: conn} do

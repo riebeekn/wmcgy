@@ -2,7 +2,7 @@ defmodule WmcgyWeb.UserRegistrationLiveTest do
   use WmcgyWebTest.ConnCase
 
   import Phoenix.LiveViewTest
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do

@@ -4,7 +4,7 @@ defmodule WmcgyWeb.UserAuthTest do
   alias Phoenix.LiveView
   alias Wmcgy.Accounts
   alias WmcgyWeb.UserAuth
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   @remember_me_cookie "_wmcgy_web_user_remember_me"
 

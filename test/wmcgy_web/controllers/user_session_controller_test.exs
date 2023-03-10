@@ -1,7 +1,7 @@
 defmodule WmcgyWeb.UserSessionControllerTest do
   use WmcgyWebTest.ConnCase, async: true
 
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   setup do
     %{user: user_fixture()}

@@ -2,7 +2,7 @@ defmodule WmcgyWeb.UserResetPasswordLiveTest do
   use WmcgyWebTest.ConnCase
 
   import Phoenix.LiveViewTest
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
 
   alias Wmcgy.Accounts
 

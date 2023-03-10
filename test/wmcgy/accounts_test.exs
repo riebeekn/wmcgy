@@ -3,7 +3,7 @@ defmodule Wmcgy.AccountsTest do
 
   alias Wmcgy.Accounts
 
-  import Wmcgy.AccountsFixtures
+  import WmcgyTest.AccountsFixtures
   alias Wmcgy.Accounts.{User, UserToken}
 
   describe "get_user_by_email/1" do
