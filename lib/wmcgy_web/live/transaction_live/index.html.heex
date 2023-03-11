@@ -1,0 +1,21 @@
+<.page_header_title>Transactions</.page_header_title>
+<.custom_table id="transactions" rows={@transactions}>
+  <:col :let={transaction} label="Date" col_width="w-1/12">
+    <%= transaction.date %>
+  </:col>
+  <:col :let={transaction} label="Category" col_width="w-3/12">
+    <%= transaction.category.name %>
+  </:col>
+  <:col :let={transaction} label="Description" col_width="w-4/12">
+    <%= transaction.description %>
+  </:col>
+  <:col :let={transaction} label="Amount" col_width="w-2/12">
+    <%= transaction.amount %>
+  </:col>
+  <:col label="Edit" sr_only={true} col_width="w-1/12">
+    <.link href="#">Edit</.link>
+  </:col>
+  <:col label="Delete" sr_only={true} col_width="w-1/12">
+    <.link href="#">Delete</.link>
+  </:col>
+</.custom_table>
