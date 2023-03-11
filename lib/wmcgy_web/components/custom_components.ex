@@ -37,8 +37,9 @@ defmodule WmcgyWeb.CustomComponents do
   # ===========================================================================
   @doc """
   Renders a styled page header.
+
   ## Examples
-    <.page_header_title>Transactions</.page_title_title>
+    <.page_header_title>Transactions</.page_header_title>
   """
   def page_header_title(assigns) do
     ~H"""
@@ -52,6 +53,7 @@ defmodule WmcgyWeb.CustomComponents do
   @doc """
   Renders a table.
   ## Examples
+
   <.custom_table id="users" rows={@users}>
     <:col :let={user} label="id" col_width="w-2/5"><%= user.id %></:col>
     <:col :let={user} label="username" col_width="w-2/5"><%= user.username %></:col>
@@ -60,6 +62,11 @@ defmodule WmcgyWeb.CustomComponents do
   """
   attr :id, :string, required: true
   attr :rows, :list, required: true
+  attr :paginate?, :boolean, default: false
+  attr :current_page, :integer, default: nil
+  attr :current_page_size, :integer, default: nil
+  attr :total_pages, :integer, default: nil
+  attr :total_entries, :integer, default: nil
   attr :current_sort_field, :string, default: nil
   attr :current_sort_dir, :atom, default: nil
   attr :data_changed_event_msg_key, :atom, default: nil
@@ -73,6 +80,17 @@ defmodule WmcgyWeb.CustomComponents do
 
   def custom_table(assigns) do
     ~H"""
+    <%= if @paginate? do %>
+      <.live_component
+        module={WmcgyWeb.PagerComponent}
+        id={"#{@id}-top-pager"}
+        current_page={@current_page}
+        current_page_size={@current_page_size}
+        total_pages={@total_pages}
+        total_entries={@total_entries}
+        data_changed_event_msg_key={@data_changed_event_msg_key}
+      />
+    <% end %>
     <div id={@id} class="flex flex-col mt-4">
       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -113,6 +131,17 @@ defmodule WmcgyWeb.CustomComponents do
         </div>
       </div>
     </div>
+    <%= if @paginate? do %>
+      <.live_component
+        module={WmcgyWeb.PagerComponent}
+        id={"#{@id}-bottom-pager"}
+        current_page={@current_page}
+        current_page_size={@current_page_size}
+        total_pages={@total_pages}
+        total_entries={@total_entries}
+        data_changed_event_msg_key={@data_changed_event_msg_key}
+      />
+    <% end %>
     """
   end
 

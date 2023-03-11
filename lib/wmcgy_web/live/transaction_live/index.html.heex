@@ -2,6 +2,11 @@
 <.custom_table
   id="transactions"
   rows={@transactions}
+  paginate?={true}
+  current_page={@current_page}
+  current_page_size={@current_page_size}
+  total_pages={@total_pages}
+  total_entries={@total_entries}
   current_sort_field={@current_sort_field}
   current_sort_dir={@current_sort_dir}
   data_changed_event_msg_key={:transactions_data_changed}
