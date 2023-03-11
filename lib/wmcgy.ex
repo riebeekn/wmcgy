@@ -49,4 +49,17 @@ defmodule Wmcgy do
             total_pages: pos_integer()
           })
   defdelegate list_transactions(user, opts \\ []), to: Wmcgy.Transactions
+
+  @spec create_transaction(
+          user :: User.t(),
+          category :: Category.t(),
+          attrs :: %{
+            description: String.t(),
+            date: Date.t(),
+            amount: Decimal.t(),
+            is_expense?: boolean(),
+            category_id: pos_integer()
+          }
+        ) :: {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
+  defdelegate create_transaction(user, category, attrs), to: Wmcgy.Transactions
 end

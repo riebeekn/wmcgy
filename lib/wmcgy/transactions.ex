@@ -2,9 +2,11 @@ defmodule Wmcgy.Transactions do
   @moduledoc """
   Context module for transaction specific functionality
   """
+  alias Ecto.Changeset
   alias Wmcgy.Accounts.User
   alias Wmcgy.Query
   alias Wmcgy.Repo
+  alias WmcgySchema.{Category, Transaction}
 
   @default_sort_field :date
   @default_sort_dir :desc
@@ -35,4 +37,34 @@ defmodule Wmcgy.Transactions do
       page_size: page_size
     }
   end
+
+  # ===========================================================================
+  def create_transaction(%User{} = user, %Category{} = category, attrs) do
+    attrs = maybe_negate_amount(attrs)
+
+    %Transaction{}
+    |> Changeset.cast(attrs, [:description, :date, :amount, :is_expense?])
+    |> Changeset.put_assoc(:user, user)
+    |> Changeset.put_assoc(:category, category)
+    |> Repo.insert()
+  end
+
+  # ===========================================================================
+  defp maybe_negate_amount(%{is_expense?: true, amount: amount} = attrs) do
+    if Decimal.gt?(amount, 0) do
+      Map.put(attrs, :amount, Decimal.negate(amount))
+    else
+      attrs
+    end
+  end
+
+  defp maybe_negate_amount(%{type: :income, amount: amount} = attrs) do
+    if Decimal.lt?(amount, 0) do
+      Map.put(attrs, :amount, Decimal.negate(amount))
+    else
+      attrs
+    end
+  end
+
+  defp maybe_negate_amount(attrs), do: attrs
 end
