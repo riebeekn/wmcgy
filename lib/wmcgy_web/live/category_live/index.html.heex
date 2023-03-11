@@ -1,23 +1,22 @@
 <%= if Enum.any?(@categories) do %>
-  <.header>
-    Categories
-    <:actions>
-      <.link patch={~p"/categories/new"}>
-        <.button>New Category</.button>
-      </.link>
-    </:actions>
-  </.header>
-  <.table id="categories" rows={@categories} row_id={&"categories-#{&1.id}"}>
+  <.flex_container>
+    <.page_header_title>Categories</.page_header_title>
+    <.link patch={~p"/categories/new"}>
+      <.button>New Category</.button>
+    </.link>
+  </.flex_container>
+
+  <.custom_table id="categories" rows={@categories}>
     <:col :let={category} label="Name"><%= category.name %></:col>
-    <:action :let={category}>
+    <:col :let={category} label="Edit" col_width="w-1/6" sr_only={true}>
       <.link patch={~p"/categories/#{category}/edit"}>Edit</.link>
-    </:action>
-    <:action :let={category}>
+    </:col>
+    <:col :let={category} label="Delete" col_width="w-1/6" sr_only={true}>
       <.link phx-click={JS.push("delete", value: %{id: category.id})} data-confirm="Are you sure?">
         Delete
       </.link>
-    </:action>
-  </.table>
+    </:col>
+  </.custom_table>
 <% else %>
   <div class="bg-emerald-50">
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-24 lg:px-8">
@@ -35,6 +34,7 @@
     </div>
   </div>
 <% end %>
+
 <.modal
   :if={@live_action in [:new, :edit]}
   id="category-modal"

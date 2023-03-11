@@ -9,6 +9,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
   describe "when not logged in" do
     test "redirects to log in when attempting to access page", %{conn: conn} do
       assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/categories")
+
       assert redirect_map.to == "/users/log_in"
     end
   end
@@ -29,6 +30,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
       category_belonging_to_a_different_user: category_belonging_to_a_different_user
     } do
       {:ok, _view, html} = live(conn, ~p"/categories")
+
       assert html =~ "Categories"
       assert html =~ category.name
       refute html =~ category_belonging_to_a_different_user.name
@@ -40,6 +42,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
       category: category
     } do
       Wmcgy.delete_category(user, category.id)
+
       {:ok, _view, html} = live(conn, ~p"/categories")
       assert html =~ "Create some categories."
 
@@ -52,6 +55,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
 
   describe "New" do
     setup :register_and_log_in_user
+
     @category_name "some category name"
     test "saves a new category when supplied a valid name", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/categories")
@@ -66,6 +70,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
              |> render_submit()
 
       assert_patch(index_live, ~p"/categories")
+
       html = render(index_live)
       assert html =~ "Category created successfully"
       assert html =~ @category_name
@@ -89,6 +94,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
       user: user
     } do
       Wmcgy.create_category(user, @category_name)
+
       {:ok, index_live, _html} = live(conn, ~p"/categories")
 
       assert index_live |> element("a", "New Category") |> render_click() =~
@@ -114,7 +120,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
     test "updates a category when supplied a valid name", %{conn: conn, category: category} do
       {:ok, index_live, _html} = live(conn, ~p"/categories")
 
-      assert index_live |> element("#categories-#{category.id} a", "Edit") |> render_click() =~
+      assert index_live |> element("#categories-row-#{category.id} a", "Edit") |> render_click() =~
                "Edit Category"
 
       assert_patch(index_live, ~p"/categories/#{category}/edit")
@@ -124,6 +130,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
              |> render_submit()
 
       assert_patch(index_live, ~p"/categories")
+
       html = render(index_live)
       assert html =~ "Category updated successfully"
       assert html =~ @category_name
@@ -132,7 +139,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
     test "displays an error with invalid attributes", %{conn: conn, category: category} do
       {:ok, index_live, _html} = live(conn, ~p"/categories")
 
-      assert index_live |> element("#categories-#{category.id} a", "Edit") |> render_click() =~
+      assert index_live |> element("#categories-row-#{category.id} a", "Edit") |> render_click() =~
                "Edit Category"
 
       assert_patch(index_live, ~p"/categories/#{category}/edit")
@@ -148,9 +155,10 @@ defmodule WmcgyWeb.CategoryLiveTest do
       category: category
     } do
       another_category = category_fixture(user)
+
       {:ok, index_live, _html} = live(conn, ~p"/categories")
 
-      assert index_live |> element("#categories-#{category.id} a", "Edit") |> render_click() =~
+      assert index_live |> element("#categories-row-#{category.id} a", "Edit") |> render_click() =~
                "Edit"
 
       assert_patch(index_live, ~p"/categories/#{category}/edit")
@@ -172,8 +180,9 @@ defmodule WmcgyWeb.CategoryLiveTest do
 
     test "deletes category in listing", %{conn: conn, category: category} do
       {:ok, index_live, _html} = live(conn, ~p"/categories")
-      assert index_live |> element("#categories-#{category.id} a", "Delete") |> render_click()
-      refute has_element?(index_live, "#categories-#{category.id}")
+
+      assert index_live |> element("#categories-row-#{category.id} a", "Delete") |> render_click()
+      refute has_element?(index_live, "#categories-row-#{category.id}")
     end
 
     test "displays an error when the category is in use", %{
@@ -182,12 +191,13 @@ defmodule WmcgyWeb.CategoryLiveTest do
       category: category
     } do
       transaction_fixture(user, category)
+
       {:ok, index_live, _html} = live(conn, ~p"/categories")
 
-      assert index_live |> element("#categories-#{category.id} a", "Delete") |> render_click() =~
+      assert index_live |> element("#categories-row-#{category.id} a", "Delete") |> render_click() =~
                "Category cannot be deleted as there are transactions associated with it!  If you wish to delete this category, first delete or re-assign all transactions associated with it."
 
-      assert has_element?(index_live, "#categories-#{category.id}")
+      assert has_element?(index_live, "#categories-row-#{category.id}")
     end
   end
 end

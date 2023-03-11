@@ -7,6 +7,23 @@ defmodule WmcgyWeb.CustomComponents do
 
   # ===========================================================================
   @doc """
+  Renders a flex container.
+  ## Examples
+  <.flex_container>
+    <div>Some item</div>
+    <div>Some other item</div>
+  </.flex_container>
+  """
+  def flex_container(assigns) do
+    ~H"""
+    <div class="sm:flex justify-between items-center border-b-2 border-gray-100 pt-6 md:space-x-10">
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  # ===========================================================================
+  @doc """
   Renders the logo.
   ## Examples
     <.logo />
