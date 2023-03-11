@@ -1,15 +1,21 @@
 <.page_header_title>Transactions</.page_header_title>
-<.custom_table id="transactions" rows={@transactions}>
-  <:col :let={transaction} label="Date" col_width="w-1/12">
+<.custom_table
+  id="transactions"
+  rows={@transactions}
+  current_sort_field={@current_sort_field}
+  current_sort_dir={@current_sort_dir}
+  data_changed_event_msg_key={:transactions_data_changed}
+>
+  <:col :let={transaction} label="Date" col_width="w-1/12" sort_field={:date}>
     <%= transaction.date |> DateHelpers.to_string() %>
   </:col>
-  <:col :let={transaction} label="Category" col_width="w-3/12">
+  <:col :let={transaction} label="Category" col_width="w-3/12" sort_field={:category}>
     <%= transaction.category.name %>
   </:col>
-  <:col :let={transaction} label="Description" col_width="w-4/12">
+  <:col :let={transaction} label="Description" col_width="w-4/12" sort_field={:description}>
     <%= transaction.description %>
   </:col>
-  <:col :let={transaction} label="Amount" col_width="w-2/12">
+  <:col :let={transaction} label="Amount" col_width="w-2/12" sort_field={:amount}>
     <%= transaction.amount |> Currency.number_to_currency() %>
   </:col>
   <:col label="Edit" sr_only={true} col_width="w-1/12">

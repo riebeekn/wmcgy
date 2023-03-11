@@ -60,11 +60,15 @@ defmodule WmcgyWeb.CustomComponents do
   """
   attr :id, :string, required: true
   attr :rows, :list, required: true
+  attr :current_sort_field, :string, default: nil
+  attr :current_sort_dir, :atom, default: nil
+  attr :data_changed_event_msg_key, :atom, default: nil
 
   slot :col, required: true do
     attr :label, :string
     attr :col_width, :string
     attr :sr_only, :boolean
+    attr :sort_field, :atom
   end
 
   def custom_table(assigns) do
@@ -77,7 +81,13 @@ defmodule WmcgyWeb.CustomComponents do
               <thead class="bg-gray-50">
                 <tr>
                   <%= for col <- @col do %>
-                    <.table_column col={col} />
+                    <.table_column_header
+                      col={col}
+                      table_id={@id}
+                      current_sort_field={@current_sort_field}
+                      current_sort_dir={@current_sort_dir}
+                      data_changed_event_msg_key={@data_changed_event_msg_key}
+                    />
                   <% end %>
                 </tr>
               </thead>
@@ -107,7 +117,8 @@ defmodule WmcgyWeb.CustomComponents do
   end
 
   # ===========================================================================
-  defp table_column(%{col: %{sr_only: true}} = assigns) do
+  # sr_only table column header
+  defp table_column_header(%{col: %{sr_only: true}} = assigns) do
     ~H"""
     <th scope="col" class={"#{@col[:col_width]} relative px-6 py-3"}>
       <span class="sr-only"><%= @col.label %></span>
@@ -115,11 +126,32 @@ defmodule WmcgyWeb.CustomComponents do
     """
   end
 
-  defp table_column(assigns) do
+  # sortable table column header
+  defp table_column_header(%{col: %{sort_field: _sort_field}} = assigns) do
     ~H"""
     <th
       scope="col"
-      class={"#{@col[:col_width]} px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"}
+      class={"#{@col[:col_width]} px-6 py-3 text-left text-xs font-semibold text-emerald-700 uppercase tracking-wider hover:text-emerald-600"}
+    >
+      <.live_component
+        module={WmcgyWeb.SortLinkComponent}
+        id={"#{@table_id}-#{@col.sort_field}-sort-link"}
+        label={@col.label}
+        sort_field={@col.sort_field}
+        current_sort_field={@current_sort_field}
+        current_sort_dir={@current_sort_dir}
+        data_changed_event_msg_key={@data_changed_event_msg_key}
+      />
+    </th>
+    """
+  end
+
+  # default table column header
+  defp table_column_header(assigns) do
+    ~H"""
+    <th
+      scope="col"
+      class={"#{@col[:col_width]} px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"}
     >
       <%= @col.label %>
     </th>

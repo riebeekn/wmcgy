@@ -63,4 +63,14 @@ defmodule WmcgyWebTest.ConnCase do
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
+
+  @doc """
+  Simple helper to remove html tags, consecutive white space and new lines
+  """
+  def strip_html(raw_html) do
+    raw_html
+    |> HtmlSanitizeEx.strip_tags()
+    |> String.replace("\n", "")
+    |> String.replace(~r/ +/, " ")
+  end
 end

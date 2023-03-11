@@ -22,12 +22,16 @@ defmodule WmcgyWeb.TransactionLiveTest do
 
       transactions_for_first_page =
         for _i <- 1..30 do
-          transaction_fixture(user, category, %{date: two_days_ago})
+          # set a description so we can test sorting by description
+          transaction_fixture(user, category, %{date: two_days_ago, description: "za description"})
         end
 
       transactions_for_second_page =
         for _i <- 1..30 do
-          transaction_fixture(user, category, %{date: three_days_ago})
+          transaction_fixture(user, category, %{
+            date: three_days_ago,
+            description: "a description"
+          })
         end
 
       [
@@ -42,6 +46,62 @@ defmodule WmcgyWeb.TransactionLiveTest do
       transactions_for_second_page: transactions_for_second_page
     } do
       {:ok, view, _html} = live(conn, ~p"/")
+
+      Enum.each(
+        transactions_for_first_page,
+        &assert(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+
+      Enum.each(
+        transactions_for_second_page,
+        &refute(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+    end
+
+    test "sort results appropriately when passed a sort field and direction", %{
+      conn: conn,
+      transactions_for_first_page: transactions_for_first_page,
+      transactions_for_second_page: transactions_for_second_page
+    } do
+      # switch the default sort direction and field, 2nd page transactions should show on the first
+      # page when sorting by description ascending
+      {:ok, view, _html} = live(conn, ~p"/transactions?sort_field=description&sort_dir=asc")
+
+      Enum.each(
+        transactions_for_first_page,
+        &refute(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+
+      Enum.each(
+        transactions_for_second_page,
+        &assert(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+    end
+
+    test "sorts results when a header column is clicked", %{
+      conn: conn,
+      transactions_for_first_page: transactions_for_first_page,
+      transactions_for_second_page: transactions_for_second_page
+    } do
+      {:ok, view, _html} = live(conn, ~p"/transactions?sort_field=description&sort_dir=desc")
+
+      view
+      |> element("a", "Description")
+      |> render_click()
+
+      Enum.each(
+        transactions_for_first_page,
+        &refute(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+
+      Enum.each(
+        transactions_for_second_page,
+        &assert(has_element?(view, "#transactions-row-#{&1.id}"))
+      )
+
+      view
+      |> element("a", "Description")
+      |> render_click()
 
       Enum.each(
         transactions_for_first_page,

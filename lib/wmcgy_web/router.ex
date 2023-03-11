@@ -62,6 +62,7 @@ defmodule WmcgyWeb.Router do
       on_mount: [{WmcgyWeb.UserAuth, :ensure_authenticated}] do
       # Transactions routes
       live "/", TransactionLive.Index, :index
+      live "/transactions", TransactionLive.Index, :list
 
       # Categories routes
       live "/categories", CategoryLive.Index, :index
