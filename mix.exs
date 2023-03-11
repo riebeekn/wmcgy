@@ -60,6 +60,7 @@ defmodule Wmcgy.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:scrivener_ecto, "~> 2.0"},
+      {:number, "~> 1.0.1"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: [:dev, :test], runtime: false},
       {:boundary, "~> 0.9.0", runtime: false},
