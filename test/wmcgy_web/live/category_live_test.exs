@@ -4,6 +4,7 @@ defmodule WmcgyWeb.CategoryLiveTest do
   import Phoenix.LiveViewTest
   import WmcgyTest.AccountsFixtures
   import WmcgyTest.CategoriesFixtures
+  import WmcgyTest.TransactionsFixtures
 
   describe "when not logged in" do
     test "redirects to log in when attempting to access page", %{conn: conn} do
@@ -173,6 +174,20 @@ defmodule WmcgyWeb.CategoryLiveTest do
       {:ok, index_live, _html} = live(conn, ~p"/categories")
       assert index_live |> element("#categories-#{category.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#categories-#{category.id}")
+    end
+
+    test "displays an error when the category is in use", %{
+      conn: conn,
+      user: user,
+      category: category
+    } do
+      transaction_fixture(user, category)
+      {:ok, index_live, _html} = live(conn, ~p"/categories")
+
+      assert index_live |> element("#categories-#{category.id} a", "Delete") |> render_click() =~
+               "Category cannot be deleted as there are transactions associated with it!  If you wish to delete this category, first delete or re-assign all transactions associated with it."
+
+      assert has_element?(index_live, "#categories-#{category.id}")
     end
   end
 end

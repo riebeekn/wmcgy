@@ -3,6 +3,7 @@ defmodule Wmcgy.CategoriesTest do
 
   import WmcgyTest.AccountsFixtures
   import WmcgyTest.CategoriesFixtures
+  import WmcgyTest.TransactionsFixtures
 
   alias Wmcgy.Categories
   alias Wmcgy.Query
@@ -29,6 +30,7 @@ defmodule Wmcgy.CategoriesTest do
       category_2: category_2
     } do
       categories = Categories.list_categories(user)
+
       assert Enum.count(categories) == 2
       assert categories == [category_2, category_1]
     end
@@ -94,6 +96,7 @@ defmodule Wmcgy.CategoriesTest do
       # arrange
       user_1 = user_fixture()
       category_fixture(user_1, "some category name")
+
       # act / assert
       assert {:error, %Ecto.Changeset{} = changeset} =
                Categories.create_category(user_1, "some category name" |> String.upcase())
@@ -115,6 +118,7 @@ defmodule Wmcgy.CategoriesTest do
 
     test "with valid attributes updates the category", %{category: category} do
       assert {:ok, category} = Categories.update_category(category, "a new name")
+
       assert category.name == "a new name"
     end
 
@@ -149,6 +153,7 @@ defmodule Wmcgy.CategoriesTest do
       category: category
     } do
       assert {:ok, _category} = Categories.delete_category(user, category.id)
+
       refute Query.Category.for_user(user) |> Repo.get(category.id)
     end
 
@@ -162,6 +167,18 @@ defmodule Wmcgy.CategoriesTest do
       end
 
       assert Query.Category.for_user(user_1) |> Repo.get(category.id)
+    end
+
+    test "when a category has transactions associated with it, it won't be deleted", %{
+      user_1: user,
+      category: category
+    } do
+      transaction_fixture(user, category)
+
+      assert {:error, %Ecto.Changeset{} = changeset} =
+               Categories.delete_category(user, category.id)
+
+      assert errors_on(changeset) == %{transactions: ["category in use"]}
     end
 
     test "raises an error when the category does not exist", %{user_1: user} do

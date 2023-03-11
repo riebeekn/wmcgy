@@ -23,8 +23,20 @@ defmodule WmcgyWeb.CategoryLive.Index do
   def handle_event("delete", %{"id" => id}, %{assigns: %{current_user: current_user}} = socket) do
     current_user
     |> Wmcgy.delete_category(id)
+    |> case do
+      {:ok, _category} ->
+        {:noreply, assign_categories(socket, current_user)}
 
-    {:noreply, assign_categories(socket, current_user)}
+      {:error, %Ecto.Changeset{errors: [transactions: {"category in use", _}]}} ->
+        socket =
+          socket
+          |> put_flash(
+            :error,
+            "Category cannot be deleted as there are transactions associated with it!  If you wish to delete this category, first delete or re-assign all transactions associated with it."
+          )
+
+        {:noreply, socket}
+    end
   end
 
   # ===========================================================================

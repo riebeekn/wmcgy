@@ -44,6 +44,11 @@ defmodule Wmcgy.Categories do
     user
     |> Query.Category.for_user()
     |> Repo.get!(id)
+    |> Changeset.change(%{})
+    |> Changeset.foreign_key_constraint(:transactions,
+      name: :transactions_category_id_fkey,
+      message: "category in use"
+    )
     |> Repo.delete()
   end
 end
