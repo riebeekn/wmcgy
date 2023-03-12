@@ -59,7 +59,10 @@ defmodule WmcgyWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{WmcgyWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [
+        {WmcgyWeb.UserAuth, :ensure_authenticated},
+        {WmcgyWeb.InjectWallDate, :assign_local_wall_date}
+      ] do
       # Transactions routes
       live "/", TransactionLive.Index, :index
       live "/transactions", TransactionLive.Index, :list
