@@ -6,7 +6,7 @@ defmodule Wmcgy.Transactions do
   alias Wmcgy.Accounts.User
   alias Wmcgy.Query
   alias Wmcgy.Repo
-  alias WmcgySchema.{Category, Transaction}
+  alias WmcgySchema.Transaction
 
   @default_sort_field :date
   @default_sort_dir :desc
@@ -39,18 +39,42 @@ defmodule Wmcgy.Transactions do
   end
 
   # ===========================================================================
-  def create_transaction(%User{} = user, %Category{} = category, attrs) do
+  def get_transaction!(%User{} = user, id) do
+    user
+    |> Query.Transaction.for_user()
+    |> Repo.get!(id)
+  end
+
+  # ===========================================================================
+  def create_transaction(%User{} = user, attrs) do
     attrs = maybe_negate_amount(attrs)
 
     %Transaction{}
-    |> Changeset.cast(attrs, [:description, :date, :amount, :is_expense?])
+    |> Changeset.cast(attrs, [:category_id, :description, :date, :amount, :type])
     |> Changeset.put_assoc(:user, user)
-    |> Changeset.put_assoc(:category, category)
     |> Repo.insert()
   end
 
   # ===========================================================================
-  defp maybe_negate_amount(%{is_expense?: true, amount: amount} = attrs) do
+  def update_transaction(%Transaction{} = transaction, attrs) do
+    attrs =
+      attrs
+      |> maybe_negate_amount()
+
+    transaction
+    |> Changeset.cast(attrs, [:category_id, :description, :date, :amount, :type])
+    |> Repo.update()
+  end
+
+  # ===========================================================================
+  def delete_transaction(%User{} = user, id) do
+    user
+    |> get_transaction!(id)
+    |> Repo.delete()
+  end
+
+  # ===========================================================================
+  defp maybe_negate_amount(%{type: :expense, amount: amount} = attrs) do
     if Decimal.gt?(amount, 0) do
       Map.put(attrs, :amount, Decimal.negate(amount))
     else

@@ -57,4 +57,11 @@ defmodule WmcgyTest.DataCase do
       end)
     end)
   end
+
+  @doc """
+  Simple short-hand helper to help with dealing with decimals in tests
+  """
+  def decimal(val) do
+    Decimal.from_float(val)
+  end
 end

@@ -50,16 +50,36 @@ defmodule Wmcgy do
           })
   defdelegate list_transactions(user, opts \\ []), to: Wmcgy.Transactions
 
+  @spec get_transaction!(user :: User.t(), id :: pos_integer()) ::
+          Transaction.t() | Ecto.NoResultsError
+  defdelegate get_transaction!(user, id), to: Wmcgy.Transactions
+
+  @type transaction_type :: :income | :expense
   @spec create_transaction(
           user :: User.t(),
-          category :: Category.t(),
           attrs :: %{
             description: String.t(),
             date: Date.t(),
             amount: Decimal.t(),
-            is_expense?: boolean(),
+            type: transaction_type,
             category_id: pos_integer()
           }
         ) :: {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
-  defdelegate create_transaction(user, category, attrs), to: Wmcgy.Transactions
+  defdelegate create_transaction(user, attrs), to: Wmcgy.Transactions
+
+  @spec update_transaction(
+          transaction :: Transaction.t(),
+          attrs :: %{
+            description: String.t(),
+            date: Date.t(),
+            amount: Decimal.t(),
+            type: transaction_type,
+            category_id: pos_integer()
+          }
+        ) :: {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
+  defdelegate update_transaction(transaction, attrs), to: Wmcgy.Transactions
+
+  @spec delete_transaction(user :: User.t(), id :: pos_integer) ::
+          {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
+  defdelegate delete_transaction(user, id), to: Wmcgy.Transactions
 end

@@ -24,7 +24,7 @@ defmodule WmcgyTest.TransactionsFixtures do
       |> Map.put(:user_id, user.id)
       |> Map.put(:category_id, category.id)
       |> maybe_convert_amount_to_decimal()
-      |> set_is_expense_flag
+      |> set_type
 
     Ecto.Changeset.cast(%Transaction{}, params, [
       :user_id,
@@ -32,7 +32,7 @@ defmodule WmcgyTest.TransactionsFixtures do
       :description,
       :date,
       :amount,
-      :is_expense?
+      :type
     ])
   end
 
@@ -42,11 +42,11 @@ defmodule WmcgyTest.TransactionsFixtures do
 
   defp maybe_convert_amount_to_decimal(attrs), do: attrs
 
-  defp set_is_expense_flag(%{amount: amount} = attrs) do
+  defp set_type(%{amount: amount} = attrs) do
     if Decimal.negative?(amount) do
-      Map.put(attrs, :is_expense?, true)
+      Map.put(attrs, :type, :expense)
     else
-      Map.put(attrs, :is_expense?, false)
+      Map.put(attrs, :type, :income)
     end
   end
 end
