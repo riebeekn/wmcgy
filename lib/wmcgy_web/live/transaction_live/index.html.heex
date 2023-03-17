@@ -1,4 +1,10 @@
-<.page_header_title>Transactions</.page_header_title>
+<.flex_container>
+  <.page_header_title>Transactions</.page_header_title>
+  <.link navigate={~p"/transactions/new"}>
+    <.button>Add New Transaction</.button>
+  </.link>
+</.flex_container>
+
 <.custom_table
   id="transactions"
   rows={@transactions}
@@ -23,10 +29,12 @@
   <:col :let={transaction} label="Amount" col_width="w-2/12" sort_field={:amount}>
     <%= transaction.amount |> Currency.number_to_currency() %>
   </:col>
-  <:col label="Edit" sr_only={true} col_width="w-1/12">
-    <.link href="#">Edit</.link>
+  <:col :let={transaction} label="Edit" sr_only={true} col_width="w-1/12">
+    <.link navigate={~p"/transactions/#{transaction}/edit"}>Edit</.link>
   </:col>
-  <:col label="Delete" sr_only={true} col_width="w-1/12">
-    <.link href="#">Delete</.link>
+  <:col :let={transaction} label="Delete" sr_only={true} col_width="w-1/12">
+    <.link href="#" phx-click="delete" phx-value-id={transaction.id} data-confirm="Are you sure?">
+      Delete
+    </.link>
   </:col>
 </.custom_table>

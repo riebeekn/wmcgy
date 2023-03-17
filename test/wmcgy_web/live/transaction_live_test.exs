@@ -2,12 +2,30 @@ defmodule WmcgyWeb.TransactionLiveTest do
   use WmcgyWebTest.ConnCase, async: true
 
   import Phoenix.LiveViewTest
+  import WmcgyTest.AccountsFixtures
   import WmcgyTest.CategoriesFixtures
   import WmcgyTest.TransactionsFixtures
 
   describe "when not logged in" do
     test "redirects to log in when attempting to access page", %{conn: conn} do
       assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/")
+      assert redirect_map.to == ~p"/users/log_in"
+    end
+
+    test "redirects to log in when attempting to access create page", %{conn: conn} do
+      assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/transactions/new")
+
+      assert redirect_map.to == ~p"/users/log_in"
+    end
+
+    test "redirects to log in when attempting to access edit page", %{conn: conn} do
+      user = user_fixture()
+      category = category_fixture(user)
+      transaction = transaction_fixture(user, category)
+
+      assert {:error, {:redirect, redirect_map}} =
+               live(conn, ~p"/transactions/#{transaction.id}/edit")
+
       assert redirect_map.to == ~p"/users/log_in"
     end
   end
@@ -331,6 +349,126 @@ defmodule WmcgyWeb.TransactionLiveTest do
         transactions_for_second_page,
         &refute(has_element?(view, "#transactions-row-#{&1.id}"))
       )
+    end
+  end
+
+  describe "Create" do
+    setup :register_and_log_in_user
+
+    setup %{user: user} do
+      category = category_fixture(user)
+
+      [
+        category: category
+      ]
+    end
+
+    test "saves a new transaction with valid attribute", %{conn: conn, category: category} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/new")
+      assert has_element?(view, "h1", "Add Transaction")
+
+      {:ok, _view, html} =
+        view
+        |> form("#transaction-form", %{
+          "transaction" => %{
+            "description" => "a description for our transaction!",
+            "date" => "2021-06-04",
+            "amount" => "1.23",
+            "type" => "expense",
+            "category_id" => category.id
+          }
+        })
+        |> render_submit()
+        |> follow_redirect(conn, ~p"/")
+
+      assert html =~ "Transaction created"
+      assert html =~ "a description for our transaction!"
+    end
+
+    test "displays errors with invalid attributes", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/new")
+
+      view
+      |> form("#transaction-form", %{"transaction" => %{}})
+
+      assert view
+             |> form("#transaction-form", %{"transaction" => %{}})
+             |> render_submit() =~ "can&#39;t be blank"
+    end
+  end
+
+  describe "Edit" do
+    setup :register_and_log_in_user
+
+    setup(%{user: user}) do
+      category = category_fixture(user)
+      transaction = transaction_fixture(user, category)
+
+      [
+        category: category,
+        transaction: transaction
+      ]
+    end
+
+    test "edits the transaction when passed valid attrs", %{
+      conn: conn,
+      category: category,
+      transaction: transaction
+    } do
+      {:ok, view, _html} = live(conn, ~p"/transactions/#{transaction.id}/edit")
+      assert has_element?(view, "h1", "Edit Transaction")
+
+      {:ok, _view, html} =
+        view
+        |> form("#transaction-form", %{
+          "transaction" => %{
+            "description" => "an updated description for our transaction!",
+            "date" => "2001-01-23",
+            "amount" => "1.23",
+            "type" => "expense",
+            "category_id" => category.id
+          }
+        })
+        |> render_submit()
+        |> follow_redirect(conn, ~p"/")
+
+      assert html =~ "Transaction updated"
+      assert html =~ "an updated description for our transaction!"
+    end
+
+    test "displays errors with invalid attributes", %{conn: conn, transaction: transaction} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/#{transaction.id}/edit")
+
+      view
+      |> form("#transaction-form", %{"transaction" => %{"amount" => nil}})
+      |> render_submit()
+
+      assert view
+             |> form("#transaction-form", %{"transaction" => %{}})
+             |> render_submit() =~ "can&#39;t be blank"
+    end
+  end
+
+  describe "Delete" do
+    setup :register_and_log_in_user
+
+    setup(%{user: user}) do
+      category = category_fixture(user)
+      transaction = transaction_fixture(user, category)
+
+      [
+        transaction: transaction
+      ]
+    end
+
+    test "deletes transaction in listing", %{conn: conn, transaction: transaction} do
+      {:ok, index_live, _html} = live(conn, ~p"/")
+
+      assert index_live
+             |> element("#transactions-row-#{transaction.id} a", "Delete")
+             |> render_click()
+
+      refute has_element?(index_live, "#transactions-row-#{transaction.id}")
     end
   end
 end

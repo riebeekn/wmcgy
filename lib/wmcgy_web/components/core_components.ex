@@ -226,7 +226,7 @@ defmodule WmcgyWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-4 mt-10">
+      <div class="space-y-4 mt-6">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -286,7 +286,7 @@ defmodule WmcgyWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file hidden month number password
-               range radio search select tel text textarea time url week)
+               range radio search select tel text textarea time url week currency)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -333,6 +333,26 @@ defmodule WmcgyWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "radio"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <label class="flex items-center gap-2 text-sm leading-6 font-semibold text-zinc-800">
+        <input
+          type="radio"
+          id={@id || @name}
+          name={@name}
+          value={@value}
+          checked={@checked}
+          class="border-zinc-300 text-emerald-600 focus:ring-emerald-700"
+          {@rest}
+        />
+        <%= @label %>
+      </label>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
@@ -368,6 +388,35 @@ defmodule WmcgyWeb.CoreComponents do
         ]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "currency"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <.label for={@id}><%= @label %></.label>
+      <div class="relative mt-2 rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">$</span>
+        </div>
+        <input
+          type="number"
+          name={@name}
+          id={@id || @name}
+          value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+          placeholder="0.00"
+          class={[
+            "pl-6 mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
+            "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
+            "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 phx-no-feedback:focus:ring-zinc-800/5",
+            "border-zinc-300 focus:border-emerald-400 focus:ring-zinc-800/5",
+            @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
+          ]}
+          {@rest}
+        />
+      </div>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """

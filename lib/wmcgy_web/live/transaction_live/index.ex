@@ -34,6 +34,21 @@ defmodule WmcgyWeb.TransactionLive.Index do
 
   # ===========================================================================
   @impl true
+  def handle_event("delete", %{"id" => id}, %{assigns: %{current_user: current_user}} = socket) do
+    {:ok, _} = Wmcgy.delete_transaction(current_user, id)
+
+    {:noreply,
+     assign_transactions(
+       socket,
+       socket.assigns.current_page,
+       socket.assigns.current_page_size,
+       socket.assigns.current_sort_field,
+       socket.assigns.current_sort_dir
+     )}
+  end
+
+  # ===========================================================================
+  @impl true
   def handle_info({:transactions_data_changed, %{page: page, page_size: page_size}}, socket) do
     {:noreply,
      push_patch(socket,
