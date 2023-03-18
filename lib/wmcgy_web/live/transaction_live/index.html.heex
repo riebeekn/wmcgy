@@ -1,40 +1,59 @@
-<.flex_container>
-  <.page_header_title>Transactions</.page_header_title>
-  <.link navigate={~p"/transactions/new"}>
-    <.button>Add New Transaction</.button>
-  </.link>
-</.flex_container>
-
-<.custom_table
-  id="transactions"
-  rows={@transactions}
-  paginate?={true}
-  current_page={@current_page}
-  current_page_size={@current_page_size}
-  total_pages={@total_pages}
-  total_entries={@total_entries}
-  current_sort_field={@current_sort_field}
-  current_sort_dir={@current_sort_dir}
-  data_changed_event_msg_key={:transactions_data_changed}
->
-  <:col :let={transaction} label="Date" col_width="w-1/12" sort_field={:date}>
-    <%= transaction.date |> DateHelpers.to_string() %>
-  </:col>
-  <:col :let={transaction} label="Category" col_width="w-3/12" sort_field={:category}>
-    <%= transaction.category.name %>
-  </:col>
-  <:col :let={transaction} label="Description" col_width="w-4/12" sort_field={:description}>
-    <%= transaction.description %>
-  </:col>
-  <:col :let={transaction} label="Amount" col_width="w-2/12" sort_field={:amount}>
-    <%= transaction.amount |> Currency.number_to_currency() %>
-  </:col>
-  <:col :let={transaction} label="Edit" sr_only={true} col_width="w-1/12">
-    <.link navigate={~p"/transactions/#{transaction}/edit"}>Edit</.link>
-  </:col>
-  <:col :let={transaction} label="Delete" sr_only={true} col_width="w-1/12">
-    <.link href="#" phx-click="delete" phx-value-id={transaction.id} data-confirm="Are you sure?">
-      Delete
+<%= if @created_categories? do %>
+  <.flex_container>
+    <.page_header_title>Transactions</.page_header_title>
+    <.link navigate={~p"/transactions/new"}>
+      <.button>Add New Transaction</.button>
     </.link>
-  </:col>
-</.custom_table>
+  </.flex_container>
+
+  <%= if Enum.count(@transactions) > 0 do %>
+    <.custom_table
+      id="transactions"
+      rows={@transactions}
+      paginate?={true}
+      current_page={@current_page}
+      current_page_size={@current_page_size}
+      total_pages={@total_pages}
+      total_entries={@total_entries}
+      current_sort_field={@current_sort_field}
+      current_sort_dir={@current_sort_dir}
+      data_changed_event_msg_key={:transactions_data_changed}
+    >
+      <:col :let={transaction} label="Date" col_width="w-1/12" sort_field={:date}>
+        <%= transaction.date |> DateHelpers.to_string() %>
+      </:col>
+      <:col :let={transaction} label="Category" col_width="w-3/12" sort_field={:category}>
+        <%= transaction.category.name %>
+      </:col>
+      <:col :let={transaction} label="Description" col_width="w-4/12" sort_field={:description}>
+        <%= transaction.description %>
+      </:col>
+      <:col :let={transaction} label="Amount" col_width="w-2/12" sort_field={:amount}>
+        <%= transaction.amount |> Currency.number_to_currency() %>
+      </:col>
+      <:col :let={transaction} label="Edit" sr_only={true} col_width="w-1/12">
+        <.link navigate={~p"/transactions/#{transaction}/edit"}>Edit</.link>
+      </:col>
+      <:col :let={transaction} label="Delete" sr_only={true} col_width="w-1/12">
+        <.link
+          href="#"
+          phx-click="delete"
+          phx-value-id={transaction.id}
+          data-confirm="Are you sure?"
+        >
+          Delete
+        </.link>
+      </:col>
+    </.custom_table>
+  <% end %>
+<% else %>
+  <.cta>
+    Welcome to WMCGY!
+    <:subtitle>Start things off by creating some categories.</:subtitle>
+    <:actions>
+      <.link patch={~p"/categories"}>
+        <.button>Create some categories</.button>
+      </.link>
+    </:actions>
+  </.cta>
+<% end %>

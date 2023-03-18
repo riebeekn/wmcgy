@@ -29,6 +29,9 @@ defmodule Wmcgy do
           {:ok, Category.t()} | {:error, Ecto.Changeset.t()}
   defdelegate delete_category(user, id), to: Wmcgy.Categories
 
+  @spec has_categories?(user :: User.t()) :: boolean()
+  defdelegate has_categories?(user), to: Wmcgy.Categories
+
   # ===========================================================================
   # Transaction specific functions
   # ===========================================================================

@@ -6,6 +6,10 @@ defmodule WmcgyWeb.TransactionLiveTest do
   import WmcgyTest.CategoriesFixtures
   import WmcgyTest.TransactionsFixtures
 
+  alias Wmcgy.Repo
+  alias WmcgySchema.Category
+  alias WmcgySchema.Transaction
+
   describe "when not logged in" do
     test "redirects to log in when attempting to access page", %{conn: conn} do
       assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/")
@@ -349,6 +353,17 @@ defmodule WmcgyWeb.TransactionLiveTest do
         transactions_for_second_page,
         &refute(has_element?(view, "#transactions-row-#{&1.id}"))
       )
+    end
+
+    test "when there are no categories, displays the intro text", %{conn: conn} do
+      Repo.delete_all(Transaction)
+      Repo.delete_all(Category)
+
+      {:ok, _view, html} = live(conn, ~p"/")
+
+      assert html =~ "Welcome to WMCGY!"
+      assert html =~ "Start things off by creating some categories."
+      assert html =~ "Create some categories"
     end
   end
 

@@ -51,4 +51,11 @@ defmodule Wmcgy.Categories do
     )
     |> Repo.delete()
   end
+
+  # ===========================================================================
+  def has_categories?(%User{} = user) do
+    user
+    |> Query.Category.for_user()
+    |> Repo.aggregate(:count) > 0
+  end
 end

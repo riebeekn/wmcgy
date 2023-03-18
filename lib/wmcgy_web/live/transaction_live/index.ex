@@ -7,8 +7,9 @@ defmodule WmcgyWeb.TransactionLive.Index do
 
   # ===========================================================================
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Transactions")}
+  def mount(_params, _session, %{assigns: %{current_user: current_user}} = socket) do
+    created_categories? = Wmcgy.has_categories?(current_user)
+    {:ok, assign(socket, page_title: "Transactions", created_categories?: created_categories?)}
   end
 
   # ===========================================================================

@@ -187,4 +187,25 @@ defmodule Wmcgy.CategoriesTest do
       end
     end
   end
+
+  describe "has_categories?/1" do
+    setup do
+      user_1 = user_fixture()
+      user_2 = user_fixture()
+      category_fixture(user_1, "some category")
+
+      [
+        user_1: user_1,
+        user_2: user_2
+      ]
+    end
+
+    test "returns true when the user has created one or more categories", %{user_1: user} do
+      assert Categories.has_categories?(user)
+    end
+
+    test "returns false when user has not created a category", %{user_2: user} do
+      refute Categories.has_categories?(user)
+    end
+  end
 end

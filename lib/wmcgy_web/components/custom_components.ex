@@ -51,6 +51,37 @@ defmodule WmcgyWeb.CustomComponents do
 
   # ===========================================================================
   @doc """
+  Renders a cta section
+
+  ## Examples
+    <.cta>Some CTA!</.cta>
+  """
+  slot :inner_block, required: true
+  slot :subtitle
+  slot :actions
+
+  def cta(assigns) do
+    ~H"""
+    <div class="bg-emerald-200">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-24 lg:px-8">
+        <h2 class="text-3xl space-y-1 font-extrabold tracking-tight text-gray-900 md:text-4xl">
+          <span class="block">
+            <%= render_slot(@inner_block) %>
+          </span>
+          <span :if={@subtitle != []} class="block text-emerald-600">
+            <%= render_slot(@subtitle) %>
+          </span>
+        </h2>
+        <div :if={@actions != []} class="mt-4">
+          <%= render_slot(@actions) %>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  # ===========================================================================
+  @doc """
   Renders a table.
   ## Examples
 
