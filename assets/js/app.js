@@ -21,6 +21,16 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import flatpickr from "../vendor/flatpickr";
+
+let Hooks = {};
+Hooks.DatePicker = {
+  mounted() {
+    flatpickr(this.el, {
+      dateFormat: "M d, Y",
+    });
+  },
+};
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -30,6 +40,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     _csrf_token: csrfToken,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   },
+  hooks: Hooks,
 });
 
 // Show progress bar on live navigation and form submits

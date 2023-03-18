@@ -2,20 +2,8 @@ defmodule WmcgyUtilities.DateHelpers do
   @moduledoc """
   Various date helpers
   """
-  @integer_to_month_map %{
-    1 => "jan",
-    2 => "feb",
-    3 => "mar",
-    4 => "apr",
-    5 => "may",
-    6 => "jun",
-    7 => "jul",
-    8 => "aug",
-    9 => "sep",
-    10 => "oct",
-    11 => "nov",
-    12 => "dec"
-  }
+
+  @format "%b %d, %Y"
 
   # ===========================================================================
   @doc """
@@ -23,8 +11,32 @@ defmodule WmcgyUtilities.DateHelpers do
   """
   @spec to_string(Date.t()) :: String.t()
   def to_string(%Date{} = date) do
-    "#{Map.get(@integer_to_month_map, date.month) |> String.capitalize()} #{date.day |> Integer.to_string() |> String.pad_leading(2, "0")}, #{date.year}"
+    Calendar.strftime(date, @format)
   end
 
   def to_string(nil), do: ""
+
+  # ===========================================================================
+  @doc """
+  Parse a date string in the format of mmm dd, yyyy
+  """
+  @spec parse(String.t()) :: {:ok, Date.t()} | {:error, msg :: String.t()}
+  def parse(nil) do
+    {:error, "can't be blank"}
+  end
+
+  def parse(date_string) when is_binary(date_string) do
+    if String.trim(date_string) == "" do
+      {:error, "can't be blank"}
+    else
+      date_string
+      |> Datix.Date.parse(@format)
+      |> case do
+        {:ok, date} -> {:ok, date}
+        {:error, _} -> {:error, "is invalid"}
+      end
+    end
+  end
+
+  def parse(_), do: {:error, "is invalid"}
 end

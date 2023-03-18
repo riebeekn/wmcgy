@@ -38,13 +38,14 @@ defmodule WmcgyUtilities.Params.Transaction do
   Transaction parameter helper module
   """
   alias Ecto.Changeset
+  alias WmcgyUtilities.DateHelpers
 
   @behaviour WmcgyUtilities.Params
 
   @transaction_params %{
     amount: :decimal,
     category_id: :integer,
-    date: :date,
+    date: :string,
     description: :string,
     type: :string
   }
@@ -56,11 +57,23 @@ defmodule WmcgyUtilities.Params.Transaction do
   def normalize_parameters(params, action) do
     {%{}, @transaction_params}
     |> Changeset.cast(params, keys())
-    |> Changeset.validate_required(keys())
+    # date is validated via convert_date so we drop the key here
+    |> Changeset.validate_required(keys() |> List.delete(:date))
     |> Changeset.validate_length(:description, max: 255)
     |> maybe_round_amount()
     |> atomize_type()
+    |> convert_date()
     |> Changeset.apply_action(action)
+  end
+
+  defp convert_date(changeset) do
+    changeset
+    |> Changeset.get_field(:date)
+    |> DateHelpers.parse()
+    |> case do
+      {:ok, date} -> Changeset.put_change(changeset, :date, date)
+      {:error, error_msg} -> Changeset.add_error(changeset, :date, error_msg)
+    end
   end
 
   defp maybe_round_amount(%Changeset{valid?: true} = changeset) do

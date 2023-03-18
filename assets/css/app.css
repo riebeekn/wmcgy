@@ -1,5 +1,14 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./flatpickr.css";
 
 /* This file is for your main application CSS */
+.flatpickr-day.selected {
+  @apply bg-emerald-600 border-emerald-500 hover:bg-emerald-500 hover:border-emerald-400;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+  @apply fill-emerald-500;
+}

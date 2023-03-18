@@ -372,7 +372,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
         |> form("#transaction-form", %{
           "transaction" => %{
             "description" => "a description for our transaction!",
-            "date" => "2021-06-04",
+            "date" => "Jun 04, 2021",
             "amount" => "1.23",
             "type" => "expense",
             "category_id" => category.id
@@ -423,7 +423,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
         |> form("#transaction-form", %{
           "transaction" => %{
             "description" => "an updated description for our transaction!",
-            "date" => "2001-01-23",
+            "date" => "Jan 23, 2001",
             "amount" => "1.23",
             "type" => "expense",
             "category_id" => category.id

@@ -84,7 +84,7 @@ defmodule WmcgyUtilities.ParamsTest do
                  %{
                    "amount" => "123",
                    "category_id" => "1",
-                   "date" => ~D[2000-01-17],
+                   "date" => "Jan 17, 2000",
                    "description" => String.duplicate("a", 256),
                    "type" => "income"
                  },
@@ -107,7 +107,7 @@ defmodule WmcgyUtilities.ParamsTest do
                  %{
                    "amount" => "123.548976",
                    "category_id" => "1",
-                   "date" => "2000-01-17",
+                   "date" => "Jan 17, 2000",
                    "description" => "some description",
                    "type" => "expense"
                  },

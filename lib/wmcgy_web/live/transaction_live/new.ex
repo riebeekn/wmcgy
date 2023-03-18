@@ -5,6 +5,7 @@ defmodule WmcgyWeb.TransactionLive.New do
   use WmcgyWeb, :live_view
 
   alias WmcgySchema.Transaction
+  alias WmcgyUtilities.DateHelpers
 
   # ===========================================================================
   @impl true
@@ -41,6 +42,9 @@ defmodule WmcgyWeb.TransactionLive.New do
 
   # ===========================================================================
   defp assign_transaction(socket) do
-    assign(socket, :transaction, %Transaction{date: socket.assigns.today, type: :expense})
+    assign(socket, :transaction, %Transaction{
+      date: socket.assigns.today |> DateHelpers.to_string(),
+      type: :expense
+    })
   end
 end

@@ -4,6 +4,8 @@ defmodule WmcgyWeb.TransactionLive.Edit do
   """
   use WmcgyWeb, :live_view
 
+  alias WmcgyUtilities.DateHelpers
+
   # ===========================================================================
   @impl true
   def mount(
@@ -45,6 +47,10 @@ defmodule WmcgyWeb.TransactionLive.Edit do
 
   # ===========================================================================
   defp assign_transaction(socket, transaction) do
-    assign(socket, :transaction, transaction)
+    assign(
+      socket,
+      :transaction,
+      Map.put(transaction, :date, transaction.date |> DateHelpers.to_string())
+    )
   end
 end

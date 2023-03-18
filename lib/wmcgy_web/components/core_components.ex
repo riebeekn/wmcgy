@@ -339,7 +339,7 @@ defmodule WmcgyWeb.CoreComponents do
       <label class="flex items-center gap-2 text-sm leading-6 font-semibold text-zinc-800">
         <input
           type="radio"
-          id={@id || @name}
+          id={"#{(@id || @name)}_#{@value}"}
           name={@name}
           value={@value}
           checked={@checked}
@@ -417,6 +417,31 @@ defmodule WmcgyWeb.CoreComponents do
           {@rest}
         />
       </div>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "date"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <.label for={@id}><%= @label %></.label>
+      <input
+        type="text"
+        name={@name}
+        id={@id || @name}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        phx-update="ignore"
+        phx-hook="DatePicker"
+        class={[
+          "mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
+          "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 phx-no-feedback:focus:ring-zinc-800/5",
+          "border-zinc-300 focus:border-emerald-400 focus:ring-zinc-800/5",
+          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
+        ]}
+        {@rest}
+      />
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
