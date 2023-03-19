@@ -372,7 +372,7 @@ defmodule Wmcgy.TransactionsTest do
     } do
       assert {:ok, _transaction} = Transactions.delete_transaction(user, transaction.id)
 
-      refute Query.Transaction.for_user(user) |> Repo.get(transaction.id)
+      refute Query.Transactions.for_user(user) |> Repo.get(transaction.id)
     end
 
     test "when transaction is not owned by current user it will not be deleted", %{
@@ -384,7 +384,7 @@ defmodule Wmcgy.TransactionsTest do
         Transactions.delete_transaction(user_2, transaction.id)
       end
 
-      assert Query.Transaction.for_user(user_1) |> Repo.get(transaction.id)
+      assert Query.Transactions.for_user(user_1) |> Repo.get(transaction.id)
     end
 
     test "raises an error when the transaction does not exist", %{user_1: user} do

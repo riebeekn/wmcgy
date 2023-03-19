@@ -11,15 +11,15 @@ defmodule Wmcgy.Categories do
   # ===========================================================================
   def list_categories(%User{} = user) do
     user
-    |> Query.Category.for_user()
-    |> Query.Category.order_by_name()
+    |> Query.Categories.for_user()
+    |> Query.Categories.order_by_name()
     |> Repo.all()
   end
 
   # ===========================================================================
   def get_category!(%User{} = user, id) do
     user
-    |> Query.Category.for_user()
+    |> Query.Categories.for_user()
     |> Repo.get!(id)
   end
 
@@ -42,7 +42,7 @@ defmodule Wmcgy.Categories do
   # ===========================================================================
   def delete_category(%User{} = user, id) do
     user
-    |> Query.Category.for_user()
+    |> Query.Categories.for_user()
     |> Repo.get!(id)
     |> Changeset.change(%{})
     |> Changeset.foreign_key_constraint(:transactions,
@@ -55,7 +55,7 @@ defmodule Wmcgy.Categories do
   # ===========================================================================
   def has_categories?(%User{} = user) do
     user
-    |> Query.Category.for_user()
+    |> Query.Categories.for_user()
     |> Repo.aggregate(:count) > 0
   end
 end

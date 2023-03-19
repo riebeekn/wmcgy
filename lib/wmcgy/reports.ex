@@ -4,7 +4,7 @@ defmodule Wmcgy.Reports do
   """
   alias Wmcgy.Accounts.User
 
-  alias Wmcgy.Query.Transaction
+  alias Wmcgy.Query
   alias Wmcgy.Repo
   alias Wmcgy.Reports.CategoryReport
   alias Wmcgy.Reports.MonthlyIncomeExpenseReport
@@ -16,11 +16,11 @@ defmodule Wmcgy.Reports do
     end_date = Keyword.get(opts, :end_date)
 
     user
-    |> Transaction.for_user()
-    |> Transaction.from_date(start_date)
-    |> Transaction.to_date(end_date)
-    |> Transaction.income()
-    |> Transaction.sum_by_category()
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.from_date(start_date)
+    |> Query.Transactions.to_date(end_date)
+    |> Query.Transactions.income()
+    |> Query.Transactions.sum_by_category()
     |> Repo.all()
     |> CategoryReport.new(start_date, end_date, :income)
   end
@@ -31,11 +31,11 @@ defmodule Wmcgy.Reports do
     end_date = Keyword.get(opts, :end_date)
 
     user
-    |> Transaction.for_user()
-    |> Transaction.from_date(start_date)
-    |> Transaction.to_date(end_date)
-    |> Transaction.expense()
-    |> Transaction.sum_by_category()
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.from_date(start_date)
+    |> Query.Transactions.to_date(end_date)
+    |> Query.Transactions.expense()
+    |> Query.Transactions.sum_by_category()
     |> Repo.all()
     |> CategoryReport.new(start_date, end_date, :expense)
   end
@@ -47,20 +47,20 @@ defmodule Wmcgy.Reports do
 
     incomes =
       user
-      |> Transaction.for_user()
-      |> Transaction.from_date(start_date)
-      |> Transaction.to_date(end_date)
-      |> Transaction.income()
-      |> Transaction.sum_by_month_and_year()
+      |> Query.Transactions.for_user()
+      |> Query.Transactions.from_date(start_date)
+      |> Query.Transactions.to_date(end_date)
+      |> Query.Transactions.income()
+      |> Query.Transactions.sum_by_month_and_year()
       |> Repo.all()
 
     expenses =
       user
-      |> Transaction.for_user()
-      |> Transaction.from_date(start_date)
-      |> Transaction.to_date(end_date)
-      |> Transaction.expense()
-      |> Transaction.sum_by_month_and_year()
+      |> Query.Transactions.for_user()
+      |> Query.Transactions.from_date(start_date)
+      |> Query.Transactions.to_date(end_date)
+      |> Query.Transactions.expense()
+      |> Query.Transactions.sum_by_month_and_year()
       |> Repo.all()
 
     MonthlyIncomeExpenseReport.new(incomes, expenses, start_date, end_date)
@@ -73,20 +73,20 @@ defmodule Wmcgy.Reports do
 
     incomes =
       user
-      |> Transaction.for_user()
-      |> Transaction.from_date(start_date)
-      |> Transaction.to_date(end_date)
-      |> Transaction.income()
-      |> Transaction.sum_by_year()
+      |> Query.Transactions.for_user()
+      |> Query.Transactions.from_date(start_date)
+      |> Query.Transactions.to_date(end_date)
+      |> Query.Transactions.income()
+      |> Query.Transactions.sum_by_year()
       |> Repo.all()
 
     expenses =
       user
-      |> Transaction.for_user()
-      |> Transaction.from_date(start_date)
-      |> Transaction.to_date(end_date)
-      |> Transaction.expense()
-      |> Transaction.sum_by_year()
+      |> Query.Transactions.for_user()
+      |> Query.Transactions.from_date(start_date)
+      |> Query.Transactions.to_date(end_date)
+      |> Query.Transactions.expense()
+      |> Query.Transactions.sum_by_year()
       |> Repo.all()
 
     YearlyIncomeExpenseReport.new(incomes, expenses, start_year, end_year)

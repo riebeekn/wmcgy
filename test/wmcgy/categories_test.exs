@@ -154,7 +154,7 @@ defmodule Wmcgy.CategoriesTest do
     } do
       assert {:ok, _category} = Categories.delete_category(user, category.id)
 
-      refute Query.Category.for_user(user) |> Repo.get(category.id)
+      refute Query.Categories.for_user(user) |> Repo.get(category.id)
     end
 
     test "when category is not owned by the current user it will not be deleted", %{
@@ -166,7 +166,7 @@ defmodule Wmcgy.CategoriesTest do
         Categories.delete_category(user_2, category.id)
       end
 
-      assert Query.Category.for_user(user_1) |> Repo.get(category.id)
+      assert Query.Categories.for_user(user_1) |> Repo.get(category.id)
     end
 
     test "when a category has transactions associated with it, it won't be deleted", %{

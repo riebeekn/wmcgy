@@ -18,9 +18,9 @@ defmodule Wmcgy.Transactions do
     sort_dir = Keyword.get(opts, :sort_dir, @default_sort_dir)
 
     user
-    |> Query.Transaction.for_user()
-    |> Query.Transaction.include_category()
-    |> Query.Transaction.sort_by(sort_field, sort_dir)
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.include_category()
+    |> Query.Transactions.sort_by(sort_field, sort_dir)
     |> Repo.paginate(page: pagination_values.page, page_size: pagination_values.page_size)
   end
 
@@ -41,7 +41,7 @@ defmodule Wmcgy.Transactions do
   # ===========================================================================
   def get_transaction!(%User{} = user, id) do
     user
-    |> Query.Transaction.for_user()
+    |> Query.Transactions.for_user()
     |> Repo.get!(id)
   end
 

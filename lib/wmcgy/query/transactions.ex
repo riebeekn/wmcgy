@@ -1,4 +1,4 @@
-defmodule Wmcgy.Query.Transaction do
+defmodule Wmcgy.Query.Transactions do
   @moduledoc """
   Module to encapsulate any transaction queries
   """

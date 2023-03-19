@@ -1,4 +1,4 @@
-defmodule Wmcgy.Query.Category do
+defmodule Wmcgy.Query.Categories do
   @moduledoc """
   Module to encapsulate any category queries
   """
