@@ -62,6 +62,10 @@ defmodule WmcgyTest.DataCase do
   Simple short-hand helper to help with dealing with decimals in tests
   """
   def decimal(val) do
-    Decimal.from_float(val)
+    if is_float(val) do
+      Decimal.from_float(val)
+    else
+      Decimal.new(val)
+    end
   end
 end

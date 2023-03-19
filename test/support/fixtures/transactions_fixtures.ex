@@ -36,6 +36,9 @@ defmodule WmcgyTest.TransactionsFixtures do
     ])
   end
 
+  defp maybe_convert_amount_to_decimal(%{amount: amount} = attrs) when is_float(amount),
+    do: Map.put(attrs, :amount, Decimal.from_float(amount))
+
   defp maybe_convert_amount_to_decimal(%{amount: amount} = attrs)
        when is_integer(amount) or is_binary(amount),
        do: Map.put(attrs, :amount, Decimal.new(amount))

@@ -6,6 +6,9 @@ defmodule Wmcgy do
   use Boundary, deps: [WmcgySchema], exports: [Accounts, Accounts.User]
 
   alias Wmcgy.Accounts.User
+  alias Wmcgy.Reports.CategoryReport
+  alias Wmcgy.Reports.MonthlyIncomeExpenseReport
+  alias Wmcgy.Reports.YearlyIncomeExpenseReport
   alias WmcgySchema.{Category, Transaction}
 
   # ===========================================================================
@@ -85,4 +88,33 @@ defmodule Wmcgy do
   @spec delete_transaction(user :: User.t(), id :: pos_integer) ::
           {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
   defdelegate delete_transaction(user, id), to: Wmcgy.Transactions
+
+  # ===========================================================================
+  # Report specific functionality
+  # ===========================================================================
+  @type income_expense_report_opts :: {:start_date, Date.t()} | {:end_date, Date.t()}
+  @spec income_by_category_report(user :: User.t(), opts :: list(income_expense_report_opts)) ::
+          CategoryReport.t()
+  defdelegate income_by_category_report(user, opts \\ []), to: Wmcgy.Reports
+
+  @spec expense_by_category_report(user :: User.t(), opts :: list(income_expense_report_opts)) ::
+          CategoryReport.t()
+  defdelegate expense_by_category_report(user, opts \\ []), to: Wmcgy.Reports
+
+  @spec monthly_income_expense_report(
+          user :: User.t(),
+          start_year :: pos_integer(),
+          start_month :: pos_integer(),
+          end_year :: pos_integer,
+          end_month :: pos_integer()
+        ) :: MonthlyIncomeExpenseReport.t()
+  defdelegate monthly_income_expense_report(user, start_year, start_month, end_year, end_month),
+    to: Wmcgy.Reports
+
+  @spec yearly_income_expense_report(
+          user :: User.t(),
+          start_year :: pos_integer(),
+          end_year :: pos_integer()
+        ) :: YearlyIncomeExpenseReport.t()
+  defdelegate yearly_income_expense_report(user, start_year, end_year), to: Wmcgy.Reports
 end
