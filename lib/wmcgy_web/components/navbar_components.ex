@@ -44,7 +44,7 @@ defmodule WmcgyWeb.NavbarComponents do
       <div class="space-y-1 px-2 pt-2 pb-3">
         <.mobile_menu_link link_text="Transactions" href={~p"/"} />
         <.mobile_menu_link link_text="Categories" href={~p"/categories"} />
-        <.mobile_menu_link link_text="Reports" href="#" />
+        <.mobile_menu_link link_text="Reports" href={~p"/reports"} />
       </div>
       <div class="pt-4 pb-3 border-t border-gray-700">
         <div class="px-2">
@@ -170,7 +170,7 @@ defmodule WmcgyWeb.NavbarComponents do
         <div class="flex space-x-4">
           <.main_menu_link link_text="Transactions" href={~p"/"} />
           <.main_menu_link link_text="Categories" href={~p"/categories"} />
-          <.main_menu_link link_text="Reports" href="#" />
+          <.main_menu_link link_text="Reports" href={~p"/reports"} />
         </div>
       </div>
     </div>

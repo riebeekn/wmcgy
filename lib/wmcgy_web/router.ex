@@ -74,6 +74,9 @@ defmodule WmcgyWeb.Router do
       live "/categories/new", CategoryLive.Index, :new
       live "/categories/:id/edit", CategoryLive.Index, :edit
 
+      # Report routes
+      live "/reports", ReportLive.Index, :index
+
       # Account routes
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
