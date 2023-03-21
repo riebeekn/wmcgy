@@ -22,6 +22,7 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import flatpickr from "../vendor/flatpickr";
+import PieChart from "./pie-chart";
 
 let Hooks = {};
 Hooks.DatePicker = {
@@ -29,6 +30,18 @@ Hooks.DatePicker = {
     flatpickr(this.el, {
       dateFormat: "M d, Y",
     });
+  },
+};
+
+Hooks.PieChart = {
+  mounted() {
+    this.chart = new PieChart(this.el);
+    this.handleEvent(
+      this.el.dataset.changedEvent,
+      ({ labels, values, percentages }) => {
+        this.chart.updateData(labels, values, percentages);
+      }
+    );
   },
 };
 

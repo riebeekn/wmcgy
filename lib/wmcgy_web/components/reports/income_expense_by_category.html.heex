@@ -1,0 +1,97 @@
+<div class="mt-6">
+  <!-- Filters / controls -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 items-center">
+    <.form
+      :let={f}
+      id="start_date_form"
+      for={%{}}
+      as={:start_date_form}
+      phx-change="start-date-changed"
+      phx-target={@myself}
+    >
+      <div class="flex items-baseline space-x-2">
+        <.label for="start_date">Start date:</.label>
+        <.input field={f[:start_date]} type="date" value={@start_date_string} />
+      </div>
+    </.form>
+    <.form
+      :let={f}
+      id="end_date_form"
+      for={%{}}
+      as={:end_date_form}
+      phx-change="end-date-changed"
+      phx-target={@myself}
+    >
+      <div class="flex items-baseline space-x-2 row-start-2 lg:row-start-1">
+        <span class="mr-2 lg:mr-0">
+          <.label for="end_date">End date:</.label>
+        </span>
+        <.input field={f[:end_date]} type="date" value={@end_date_string} />
+      </div>
+    </.form>
+    <div class="mt-2 row-start-1 col-start-2 lg:col-start-3">
+      <.button phx-click={toggle_details()}>Show / hide details</.button>
+    </div>
+  </div>
+  <!-- Charts -->
+  <div class="grid lg:grid-cols-2 px-2 mt-6">
+    <div class="mr-2">
+      <.chart
+        id="expense-chart"
+        type="pie"
+        title="Expenses"
+        data_changed_event={:expense_chart_update}
+      />
+      <!-- expense details table -->
+      <%= if Enum.count(@expense_table_data) > 0 do %>
+        <div id="expense_details" class="hidden">
+          <.custom_table
+            id="expenses_table_data"
+            rows={@expense_table_data}
+            include_footer?={true}
+          >
+            <:col :let={expense} label="Category">
+              <%= expense.category_name %>
+            </:col>
+            <:col :let={expense} label="Amount">
+              <%= expense.amount |> Currency.number_to_currency() %>
+            </:col>
+            <:footer_col>
+              Total
+            </:footer_col>
+            <:footer_col>
+              <%= @expense_total |> Currency.number_to_currency() %>
+            </:footer_col>
+          </.custom_table>
+        </div>
+      <% end %>
+    </div>
+    <div class="ml-2 mt-6 lg:mt-0">
+      <.chart
+        id="income-chart"
+        type="pie"
+        title="Income"
+        data_changed_event={:income_chart_update}
+      />
+      <!-- income details table -->
+      <%= if Enum.count(@income_table_data) > 0 do %>
+        <div id="income_details" class="hidden">
+          <.custom_table id="income_table_data" rows={@income_table_data} include_footer?={true}>
+            <:col :let={income} label="Category">
+              <%= income.category_name %>
+            </:col>
+            <:col :let={income} label="Amount">
+              <%= income.amount |> Currency.number_to_currency() %>
+            </:col>
+            <:footer_col>
+              Total
+            </:footer_col>
+            <:footer_col>
+              <%= @income_total |> Currency.number_to_currency() %>
+            </:footer_col>
+          </.custom_table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

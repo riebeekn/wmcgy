@@ -82,6 +82,47 @@ defmodule WmcgyWeb.CustomComponents do
 
   # ===========================================================================
   @doc """
+  Renders a chart
+
+  ## Examples
+    <.chart
+      id="expense-chart"
+      type="pie"
+      title="Expenses"
+      data_changed_event={:expense_chart_update}
+    />
+  """
+  attr :id, :string, required: true
+  attr :title, :string, required: true
+  attr :type, :string, required: true
+  attr :data_changed_event, :atom, default: nil
+
+  def chart(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:chart_data, fn -> [] end)
+      |> assign(:hook, hook_from_type(assigns))
+
+    ~H"""
+    <div>
+      <h3 class="text-lg font-medium text-gray-900"><%= @title %></h3>
+      <canvas
+        id={@id}
+        phx-hook={@hook}
+        phx-update="ignore"
+        data-changed-event={@data_changed_event}
+        data-chart-data={Jason.encode!(@chart_data)}
+        class="max-w-lg"
+      >
+      </canvas>
+    </div>
+    """
+  end
+
+  defp hook_from_type(%{type: "pie"}), do: "PieChart"
+
+  # ===========================================================================
+  @doc """
   Renders a table.
   ## Examples
 
@@ -93,6 +134,7 @@ defmodule WmcgyWeb.CustomComponents do
   """
   attr :id, :string, required: true
   attr :rows, :list, required: true
+  attr :include_footer?, :boolean, default: false
   attr :paginate?, :boolean, default: false
   attr :current_page, :integer, default: nil
   attr :current_page_size, :integer, default: nil
@@ -108,6 +150,8 @@ defmodule WmcgyWeb.CustomComponents do
     attr :sr_only, :boolean
     attr :sort_field, :atom
   end
+
+  slot :footer_col
 
   def custom_table(assigns) do
     ~H"""
@@ -157,6 +201,20 @@ defmodule WmcgyWeb.CustomComponents do
                   </tr>
                 <% end %>
               </tbody>
+              <%= if @include_footer? do %>
+                <tfoot class="bg-emerald-50">
+                  <tr>
+                    <%= for {fcol, f_index} <- Enum.with_index @footer_col do %>
+                      <td
+                        id={"#{@id}-footer-col-#{f_index}"}
+                        class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 uppercase"
+                      >
+                        <%= render_slot(fcol) %>
+                      </td>
+                    <% end %>
+                  </tr>
+                </tfoot>
+              <% end %>
             </table>
           </div>
         </div>
