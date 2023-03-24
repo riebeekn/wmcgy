@@ -73,4 +73,6 @@ defmodule WmcgyWebTest.ConnCase do
     |> String.replace("\n", "")
     |> String.replace(~r/ +/, " ")
   end
+
+  defdelegate decimal(val), to: WmcgyTest.DataCase
 end

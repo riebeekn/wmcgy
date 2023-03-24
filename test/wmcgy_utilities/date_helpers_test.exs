@@ -13,6 +13,24 @@ defmodule WmcgyUtilities.DateHelpersTest do
     end
   end
 
+  describe "month_shortname/1" do
+    test "returns expected values" do
+      assert "Jan" == DateHelpers.month_shortname(1)
+      assert "Feb" == DateHelpers.month_shortname(2)
+      assert "Mar" == DateHelpers.month_shortname(3)
+      assert "Apr" == DateHelpers.month_shortname(4)
+      assert "May" == DateHelpers.month_shortname(5)
+      assert "Jun" == DateHelpers.month_shortname(6)
+      assert "Jul" == DateHelpers.month_shortname(7)
+      assert "Aug" == DateHelpers.month_shortname(8)
+      assert "Sep" == DateHelpers.month_shortname(9)
+      assert "Oct" == DateHelpers.month_shortname(10)
+      assert "Nov" == DateHelpers.month_shortname(11)
+      assert "Dec" == DateHelpers.month_shortname(12)
+      assert nil == DateHelpers.month_shortname(13)
+    end
+  end
+
   describe "parse/1" do
     test "succeeds on valid date strings" do
       assert {:ok, ~D[2021-11-04]} == DateHelpers.parse("Nov 04, 2021")

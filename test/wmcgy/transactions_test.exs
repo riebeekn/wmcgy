@@ -182,6 +182,29 @@ defmodule Wmcgy.TransactionsTest do
     end
   end
 
+  describe "years_with_transactions/1" do
+    setup do
+      user = user_fixture()
+      category = category_fixture(user)
+      transaction_fixture(user, category, %{date: ~D[2020-12-12]})
+      transaction_fixture(user, category, %{date: ~D[2020-02-12]})
+      transaction_fixture(user, category, %{date: ~D[2021-12-12]})
+
+      another_user = user_fixture()
+      transaction_fixture(another_user, category_fixture(another_user), %{date: ~D[2022-01-01]})
+
+      %{user: user}
+    end
+
+    test "returns the unique years of transactions owned by the user", %{user: user} do
+      assert [2021, 2020] == Transactions.years_with_transactions(user)
+    end
+
+    test "returns an empty array if no transactions" do
+      assert [] == Transactions.years_with_transactions(user_fixture())
+    end
+  end
+
   describe "create_transaction/3" do
     setup do
       user = user_fixture()
