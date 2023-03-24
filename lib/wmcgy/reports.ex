@@ -91,4 +91,26 @@ defmodule Wmcgy.Reports do
 
     YearlyIncomeExpenseReport.new(incomes, expenses, start_year, end_year)
   end
+
+  # ===========================================================================
+  def profit_for_month(%User{} = user, year, month) do
+    user
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.sum_for_month(year, month)
+    |> Repo.one()
+    |> maybe_nil_to_zero()
+  end
+
+  # ===========================================================================
+  def profit_for_year(%User{} = user, year) do
+    user
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.sum_for_year(year)
+    |> Repo.one()
+    |> maybe_nil_to_zero()
+  end
+
+  # ===========================================================================
+  defp maybe_nil_to_zero(nil = _sum), do: Decimal.new(0)
+  defp maybe_nil_to_zero(sum), do: sum
 end

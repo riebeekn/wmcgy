@@ -70,6 +70,21 @@ defmodule Wmcgy.Query.Transactions do
   end
 
   # ===========================================================================
+  def sum_for_month(query, year, month) do
+    from t in query,
+      where:
+        fragment("date_part('year', date) = ? and date_part('month', date) = ?", ^year, ^month),
+      select: sum(t.amount)
+  end
+
+  # ===========================================================================
+  def sum_for_year(query, year) do
+    from t in query,
+      where: fragment("date_part('year', date) = ?", ^year),
+      select: sum(t.amount)
+  end
+
+  # ===========================================================================
   def unique_years(query) do
     from t in query,
       group_by: 1,

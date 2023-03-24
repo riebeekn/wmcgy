@@ -493,4 +493,62 @@ defmodule Wmcgy.ReportsTest do
                     } == Reports.yearly_income_expense_report(user, 2021, 2021)
     end
   end
+
+  describe "profit_for_month/3" do
+    setup do
+      user_1 = user_fixture()
+      user_2 = user_fixture()
+
+      category = category_fixture(user_1)
+      category_for_other_user = category_fixture(user_2)
+
+      # Feb 2020
+      transaction_fixture(user_1, category, %{amount: -100, date: ~D[2020-02-01]})
+      transaction_fixture(user_1, category, %{amount: 200, date: ~D[2020-02-25]})
+      transaction_fixture(user_1, category, %{amount: -200, date: ~D[2020-02-15]})
+
+      # transaction for user 2... not included
+      transaction_fixture(user_2, category_for_other_user, %{amount: -200, date: ~D[2020-02-15]})
+
+      # Mar 202
+      transaction_fixture(user_1, category, %{amount: -2000, date: ~D[2020-03-15]})
+
+      %{user: user_1}
+    end
+
+    test "returns expected sum based on the year and month", %{user: user} do
+      assert decimal(-100) == Reports.profit_for_month(user, 2020, 2)
+      assert decimal(-2000) == Reports.profit_for_month(user, 2020, 3)
+      assert decimal(0) == Reports.profit_for_month(user, 2020, 4)
+    end
+  end
+
+  describe "profit_for_year/2" do
+    setup do
+      user_1 = user_fixture()
+      user_2 = user_fixture()
+
+      category = category_fixture(user_1)
+      category_for_other_user = category_fixture(user_2)
+
+      # 2020
+      transaction_fixture(user_1, category, %{amount: -100, date: ~D[2020-01-01]})
+      transaction_fixture(user_1, category, %{amount: 200, date: ~D[2020-01-25]})
+      transaction_fixture(user_1, category, %{amount: -200, date: ~D[2020-02-15]})
+
+      # transaction for user 2... not included
+      transaction_fixture(user_2, category_for_other_user, %{amount: -200, date: ~D[2020-02-15]})
+
+      # 2019
+      transaction_fixture(user_1, category, %{amount: -2000, date: ~D[2019-12-15]})
+
+      %{user: user_1}
+    end
+
+    test "returns expected sum based on the year", %{user: user} do
+      assert decimal(-2000) == Reports.profit_for_year(user, 2019)
+      assert decimal(-100) == Reports.profit_for_year(user, 2020)
+      assert decimal(0) == Reports.profit_for_year(user, 2021)
+    end
+  end
 end

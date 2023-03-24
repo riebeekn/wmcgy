@@ -120,4 +120,11 @@ defmodule Wmcgy do
           end_year :: pos_integer()
         ) :: YearlyIncomeExpenseReport.t()
   defdelegate yearly_income_expense_report(user, start_year, end_year), to: Wmcgy.Reports
+
+  @spec profit_for_month(user :: User.t(), year :: pos_integer, month :: pos_integer) ::
+          Decimal.t()
+  defdelegate profit_for_month(user, year, month), to: Wmcgy.Reports
+
+  @spec profit_for_year(user :: User.t(), year :: pos_integer()) :: Decimal.t()
+  defdelegate profit_for_year(user, year), to: Wmcgy.Reports
 end
