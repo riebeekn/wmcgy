@@ -46,6 +46,14 @@ defmodule Wmcgy.Transactions do
   end
 
   # ===========================================================================
+  def years_with_transactions(%User{} = user) do
+    user
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.unique_years()
+    |> Repo.all()
+  end
+
+  # ===========================================================================
   def create_transaction(%User{} = user, attrs) do
     attrs = maybe_negate_amount(attrs)
 

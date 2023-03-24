@@ -70,6 +70,14 @@ defmodule Wmcgy.Query.Transactions do
   end
 
   # ===========================================================================
+  def unique_years(query) do
+    from t in query,
+      group_by: 1,
+      order_by: [desc: 1],
+      select: fragment("distinct(extract(year from date)::int) ")
+  end
+
+  # ===========================================================================
   def sort_by(query, :category, sort_dir) do
     query
     |> order_by([t, c], [{^sort_dir, c.name}, {^sort_dir, t.id}])

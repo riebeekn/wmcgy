@@ -120,6 +120,8 @@ defmodule WmcgyWeb.CustomComponents do
   end
 
   defp hook_from_type(%{type: "pie"}), do: "PieChart"
+  defp hook_from_type(%{type: "bar"}), do: "BarChart"
+  defp hook_from_type(%{type: "line"}), do: "LineChart"
 
   # ===========================================================================
   @doc """

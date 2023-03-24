@@ -18,6 +18,28 @@ defmodule WmcgyUtilities.DateHelpers do
 
   # ===========================================================================
   @doc """
+  Convert an integer value to a short month name
+  """
+  @integer_to_month_map %{
+    1 => "Jan",
+    2 => "Feb",
+    3 => "Mar",
+    4 => "Apr",
+    5 => "May",
+    6 => "Jun",
+    7 => "Jul",
+    8 => "Aug",
+    9 => "Sep",
+    10 => "Oct",
+    11 => "Nov",
+    12 => "Dec"
+  }
+
+  @spec month_shortname(pos_integer()) :: String.t()
+  def month_shortname(month), do: Map.get(@integer_to_month_map, month)
+
+  # ===========================================================================
+  @doc """
   Parse a date string in the format of mmm dd, yyyy
   """
   @spec parse(String.t()) :: {:ok, Date.t()} | {:error, msg :: String.t()}

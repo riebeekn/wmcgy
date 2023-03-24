@@ -38,6 +38,21 @@ function truncateString(str, num) {
   }
 }
 
+function updateChartDatasets(chart, labels, datasets) {
+  datasets?.forEach((dataset, i) => {
+    dataset.fill = false;
+    dataset.borderColor = Object.values(CHART_COLORS)[i];
+    dataset.backgroundColor = dataset.borderColor;
+    dataset.tension = 0;
+  });
+
+  chart.data = {
+    labels: labels,
+    datasets: datasets,
+  };
+  chart.update();
+}
+
 export {
   CHART_COLORS,
   DATALABEL_COLOR,
@@ -46,4 +61,5 @@ export {
   basicTooltip,
   toCurrency,
   truncateString,
+  updateChartDatasets,
 };

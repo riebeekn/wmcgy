@@ -22,6 +22,8 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import flatpickr from "../vendor/flatpickr";
+import BarChart from "./bar-chart";
+import LineChart from "./line-chart";
 import PieChart from "./pie-chart";
 
 let Hooks = {};
@@ -42,6 +44,24 @@ Hooks.PieChart = {
         this.chart.updateData(labels, values, percentages);
       }
     );
+  },
+};
+
+Hooks.BarChart = {
+  mounted() {
+    this.chart = new BarChart(this.el);
+    this.handleEvent(this.el.dataset.changedEvent, ({ labels, datasets }) => {
+      this.chart.updateData(labels, datasets);
+    });
+  },
+};
+
+Hooks.LineChart = {
+  mounted() {
+    this.chart = new LineChart(this.el);
+    this.handleEvent(this.el.dataset.changedEvent, ({ labels, datasets }) => {
+      this.chart.updateData(labels, datasets);
+    });
   },
 };
 

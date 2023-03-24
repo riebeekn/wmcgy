@@ -1,0 +1,99 @@
+<div class="mt-6">
+  <!-- Filters / controls -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 items-baseline">
+    <.form
+      :let={f}
+      id="date_options"
+      for={%{}}
+      as={:date_options_form}
+      phx-change="date-option-selected"
+      phx-target={@myself}
+    >
+      <div class="flex items-baseline space-x-2">
+        <.label for="date_option">Show:</.label>
+        <.input
+          field={f[:date_option]}
+          options={Enum.map(@date_options, &{&1.label, &1.id})}
+          type="select"
+          value={@current_date_option}
+        />
+      </div>
+    </.form>
+    <div class="mt-2 sm:mt-0">
+      <.button phx-click={toggle_details()}>Show / hide details</.button>
+    </div>
+  </div>
+  <!-- Charts -->
+  <div class="grid lg:grid-cols-2 px-2 mt-6">
+    <div class="mr-2">
+      <.chart
+        id="income-expense-chart"
+        type="line"
+        title="Overall income and expenses"
+        data_changed_event={:income_expense_chart_update}
+      />
+      <%= if Enum.count(@income_expense_table_data) > 0 do %>
+        <div id="income-expense-details" class="hidden">
+          <.custom_table
+            id="income_expense_table_data"
+            rows={@income_expense_table_data}
+            include_footer?={true}
+          >
+            <:col :let={income_expense} label="">
+              <%= month_or_year_label(income_expense) %>
+            </:col>
+            <:col :let={income_expense} label="Income">
+              <%= income_expense.income |> Currency.number_to_currency() %>
+            </:col>
+            <:col :let={income_expense} label="Expenses">
+              <%= income_expense.expense |> Currency.number_to_currency() %>
+            </:col>
+            <:footer_col>
+              Total
+            </:footer_col>
+            <:footer_col>
+              <%= @income_total |> Currency.number_to_currency() %>
+            </:footer_col>
+            <:footer_col>
+              <%= @expense_total |> Currency.number_to_currency() %>
+            </:footer_col>
+          </.custom_table>
+        </div>
+      <% end %>
+    </div>
+    <div class="ml-2 mt-6 lg:mt-0">
+      <.chart
+        id="profit-loss-chart"
+        type="bar"
+        title="Overall profit / loss"
+        data_changed_event={:profit_loss_chart_update}
+      />
+      <%= if Enum.count(@income_expense_table_data) > 0 do %>
+        <div id="profit-loss-details" class="hidden">
+          <.custom_table
+            id="profit_loss_table_data"
+            rows={@income_expense_table_data}
+            include_footer?={true}
+          >
+            <:col :let={income_expense} label="">
+              <%= month_or_year_label(income_expense) %>
+            </:col>
+            <:col :let={income_expense} label="Profit / Loss">
+              <span class={highlight_if_loss(income_expense.profit_loss)}>
+                <%= income_expense.profit_loss |> Currency.number_to_currency() %>
+              </span>
+            </:col>
+            <:footer_col>
+              Total
+            </:footer_col>
+            <:footer_col>
+              <span class={highlight_if_loss(@profit_loss_total)}>
+                <%= @profit_loss_total |> Currency.number_to_currency() %>
+              </span>
+            </:footer_col>
+          </.custom_table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

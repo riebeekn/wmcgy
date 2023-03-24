@@ -89,6 +89,9 @@ defmodule Wmcgy do
           {:ok, Transaction.t()} | {:error, Ecto.Changeset.t()}
   defdelegate delete_transaction(user, id), to: Wmcgy.Transactions
 
+  @spec years_with_transactions(user :: User.t()) :: list(pos_integer())
+  defdelegate years_with_transactions(user), to: Wmcgy.Transactions
+
   # ===========================================================================
   # Report specific functionality
   # ===========================================================================
