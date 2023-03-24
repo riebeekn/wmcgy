@@ -827,9 +827,9 @@ defmodule WmcgyWeb.ReportsLiveTest do
 
       expected_labels = [2019, 2020]
 
-      expected_income = [decimal(1500), decimal(15000)]
+      expected_income = [decimal(1500), decimal(15_000)]
       expected_expense = [decimal(560), decimal(780)]
-      expected_profit = [decimal(940), decimal(14220)]
+      expected_profit = [decimal(940), decimal(14_220)]
       expected_loss = [decimal(0), decimal(0)]
 
       assert_push_event(view, :income_expense_chart_update, %{
