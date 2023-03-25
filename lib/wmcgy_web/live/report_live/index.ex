@@ -13,7 +13,15 @@ defmodule WmcgyWeb.ReportLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <.page_header_title>Reports</.page_header_title>
+    <.flex_container>
+      <.page_header_title>Reports</.page_header_title>
+      <.live_component
+        id="mtd_ytd"
+        module={WmcgyWeb.Components.MtdYtdWidget}
+        current_user={@current_user}
+        today={@today}
+      />
+    </.flex_container>
     <%= live_component(WmcgyWeb.Components.Reports.IncomeExpenseByCategory,
       id: :income_expense_by_category,
       current_user: @current_user,

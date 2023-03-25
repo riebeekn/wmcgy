@@ -884,4 +884,32 @@ defmodule WmcgyWeb.ReportsLiveTest do
       {:ok, _view, _html} = live(conn, ~p"/reports")
     end
   end
+
+  describe "Mtd / Ytd widget" do
+    setup :register_and_log_in_user
+
+    setup %{user: user} do
+      category = category_fixture(user)
+
+      # create a few transactions for "today"... which is mocked as 2020-08-21
+      today = InjectWallDate.mocked_wall_date()
+      transaction_fixture(user, category, %{date: today, amount: -140})
+      transaction_fixture(user, category, %{date: today, amount: -40})
+      transaction_fixture(user, category, %{date: today, amount: 4000})
+
+      # create a few for July
+      transaction_fixture(user, category, %{date: ~D[2020-07-15], amount: -200})
+      transaction_fixture(user, category, %{date: ~D[2020-07-15], amount: -120})
+      transaction_fixture(user, category, %{date: ~D[2020-07-15], amount: 3000})
+
+      :ok
+    end
+
+    test "shows expected values", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/reports")
+
+      assert has_element?(view, "#mtd", "$3,820.00")
+      assert has_element?(view, "#ytd", "$6,500.00")
+    end
+  end
 end

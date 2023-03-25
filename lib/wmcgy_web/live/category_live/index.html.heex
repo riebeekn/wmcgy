@@ -1,9 +1,19 @@
 <%= if Enum.any?(@categories) do %>
   <.flex_container>
-    <.page_header_title>Categories</.page_header_title>
-    <.link patch={~p"/categories/new"}>
-      <.button>New Category</.button>
-    </.link>
+    <div>
+      <.page_header_title>Categories</.page_header_title>
+      <div class="mt-2">
+        <.link patch={~p"/categories/new"}>
+          <.button>New Category</.button>
+        </.link>
+      </div>
+    </div>
+    <.live_component
+      id="mtd_ytd"
+      module={WmcgyWeb.Components.MtdYtdWidget}
+      current_user={@current_user}
+      today={@today}
+    />
   </.flex_container>
 
   <.custom_table id="categories" rows={@categories}>

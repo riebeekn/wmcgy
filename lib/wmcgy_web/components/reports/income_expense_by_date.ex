@@ -197,17 +197,6 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByDate do
   defp month_or_year_label(%{year: year}), do: year
 
   # ===========================================================================
-  defp highlight_if_loss(""), do: ""
-
-  defp highlight_if_loss(val) do
-    if Decimal.lt?(val, 0) do
-      "text-red-700"
-    else
-      ""
-    end
-  end
-
-  # ===========================================================================
   defp toggle_details(js \\ %JS{}) do
     js
     |> WmcgyWeb.CoreComponents.toggle("#income-expense-details")

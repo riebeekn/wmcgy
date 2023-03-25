@@ -1,9 +1,19 @@
 <%= if @created_categories? do %>
   <.flex_container>
-    <.page_header_title>Transactions</.page_header_title>
-    <.link navigate={~p"/transactions/new"}>
-      <.button>Add New Transaction</.button>
-    </.link>
+    <div>
+      <.page_header_title>Transactions</.page_header_title>
+      <div class="mt-2">
+        <.link navigate={~p"/transactions/new"}>
+          <.button>Add New Transaction</.button>
+        </.link>
+      </div>
+    </div>
+    <.live_component
+      id="mtd_ytd"
+      module={WmcgyWeb.Components.MtdYtdWidget}
+      current_user={@current_user}
+      today={@today}
+    />
   </.flex_container>
 
   <%= if Enum.count(@transactions) > 0 do %>

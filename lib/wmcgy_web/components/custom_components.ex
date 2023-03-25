@@ -277,4 +277,15 @@ defmodule WmcgyWeb.CustomComponents do
     </th>
     """
   end
+
+  # ===========================================================================
+  def highlight_if_loss(""), do: ""
+
+  def highlight_if_loss(val) do
+    if Decimal.lt?(val, 0) do
+      "text-red-700"
+    else
+      ""
+    end
+  end
 end
