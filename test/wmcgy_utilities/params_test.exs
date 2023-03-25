@@ -49,6 +49,13 @@ defmodule WmcgyUtilities.ParamsTest do
     end
   end
 
+  describe "keys/1 - Transaction" do
+    test "returns transaction keys with external id when included in options" do
+      assert [:amount, :category_id, :date, :description, :external_id, :type] ==
+               Transaction.keys(include_external_id?: true)
+    end
+  end
+
   describe "normalize_parameters/2 - Transaction" do
     test "returns an error when required fields missing" do
       assert {:error, %Changeset{} = changeset} = Transaction.normalize_parameters(%{}, :new)
@@ -112,6 +119,64 @@ defmodule WmcgyUtilities.ParamsTest do
                    "type" => "expense"
                  },
                  :new
+               )
+    end
+  end
+
+  describe "normalize_parameters/3 - Transaction" do
+    test "returns an error when required fields missing" do
+      assert {:error, %Changeset{} = changeset} =
+               Transaction.normalize_parameters(%{}, :new, include_external_id?: true)
+
+      assert %{
+               amount: ["can't be blank"],
+               category_id: ["can't be blank"],
+               date: ["can't be blank"],
+               description: ["can't be blank"],
+               type: ["can't be blank"],
+               external_id: ["can't be blank"]
+             } == errors_on(changeset)
+    end
+
+    test "returns an error when external_id is too long" do
+      assert {:error, %Changeset{} = changeset} =
+               Transaction.normalize_parameters(
+                 %{
+                   "amount" => "123",
+                   "category_id" => "1",
+                   "date" => "Jan 17, 2000",
+                   "description" => "some description",
+                   "type" => "income",
+                   "external_id" => String.duplicate("a", 256)
+                 },
+                 :new,
+                 include_external_id?: true
+               )
+
+      assert %{external_id: ["should be at most 255 character(s)"]} == errors_on(changeset)
+    end
+
+    test "returns a map and rounds / pads the amount on successful normalization" do
+      assert {:ok,
+              %{
+                amount: decimal(123.55),
+                category_id: 1,
+                date: ~D[2000-01-17],
+                description: "some description",
+                type: :expense,
+                external_id: "ext_123"
+              }} ==
+               Transaction.normalize_parameters(
+                 %{
+                   "amount" => "123.548976",
+                   "category_id" => "1",
+                   "date" => "Jan 17, 2000",
+                   "description" => "some description",
+                   "type" => "expense",
+                   "external_id" => "ext_123"
+                 },
+                 :new,
+                 include_external_id?: true
                )
     end
   end
