@@ -3,7 +3,7 @@ defmodule Wmcgy do
   API for the application, all calls from the front-end should go thru
   this module vs directly calling into individual context modules.
   """
-  use Boundary, deps: [WmcgySchema], exports: [Accounts, Accounts.User]
+  use Boundary, deps: [WmcgySchema, WmcgyUtilities], exports: [Accounts, Accounts.User]
 
   alias Wmcgy.Accounts.User
   alias Wmcgy.Reports.CategoryReport
@@ -91,6 +91,15 @@ defmodule Wmcgy do
 
   @spec years_with_transactions(user :: User.t()) :: list(pos_integer())
   defdelegate years_with_transactions(user), to: Wmcgy.Transactions
+
+  @spec import_transactions(
+          import_progress :: Wmcgy.TransactionImport.ImportProgress,
+          user :: User.t(),
+          csv_header :: list(String.t()),
+          transaction_data_rows :: list(list(String.t()))
+        ) :: Wmcgy.TransactionImport.ImportProgress
+  defdelegate import_transactions(import_progress, user, csv_header, transaction_data_rows),
+    to: Wmcgy.TransactionImport
 
   # ===========================================================================
   # Report specific functionality
