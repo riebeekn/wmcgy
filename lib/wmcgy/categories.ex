@@ -24,6 +24,18 @@ defmodule Wmcgy.Categories do
   end
 
   # ===========================================================================
+  def get_or_create_category(%User{} = user, name) do
+    user
+    |> Query.Categories.for_user()
+    |> Query.Categories.by_name(name)
+    |> Repo.one()
+    |> case do
+      nil -> create_category(user, name)
+      category -> {:ok, category}
+    end
+  end
+
+  # ===========================================================================
   def create_category(%User{} = user, name) do
     %Category{}
     |> Changeset.change(%{name: name, user_id: user.id})

@@ -70,6 +70,26 @@ defmodule Wmcgy.CategoriesTest do
     end
   end
 
+  describe "get_or_create_category/2" do
+    test "creates a new category if one with the same name doesn't already exist" do
+      user = user_fixture()
+
+      assert {:ok, %Category{} = category} =
+               Categories.get_or_create_category(user, "a category name")
+
+      assert category.name == "a category name"
+    end
+
+    test "returns an existing category if one already exists" do
+      user = user_fixture()
+      existing_category = category_fixture(user, "a category")
+
+      assert {:ok, %Category{} = category} = Categories.get_or_create_category(user, "a category")
+      assert existing_category == category
+      assert 1 == Repo.aggregate(Category, :count)
+    end
+  end
+
   describe "create_category/2" do
     test "with valid data creates a category" do
       user = user_fixture()

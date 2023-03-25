@@ -12,6 +12,12 @@ defmodule Wmcgy.Query.Categories do
   end
 
   # ===========================================================================
+  def by_name(query, name) do
+    query
+    |> where([c], c.name == ^name)
+  end
+
+  # ===========================================================================
   def order_by_name(query) do
     query
     |> order_by([c], c.name)
