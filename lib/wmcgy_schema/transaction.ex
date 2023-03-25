@@ -5,6 +5,7 @@ defmodule WmcgySchema.Transaction do
   use Ecto.Schema
 
   @type t :: %__MODULE__{
+          external_id: String.t(),
           description: String.t(),
           date: Date.t(),
           amount: Decimal.t(),
@@ -16,6 +17,7 @@ defmodule WmcgySchema.Transaction do
         }
 
   schema "transactions" do
+    field :external_id, :string
     field :description, :string
     field :date, :date
     field :amount, :decimal
