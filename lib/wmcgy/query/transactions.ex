@@ -12,6 +12,12 @@ defmodule Wmcgy.Query.Transactions do
   end
 
   # ===========================================================================
+  def by_external_id(query, external_id) do
+    query
+    |> where([t], t.external_id == ^external_id)
+  end
+
+  # ===========================================================================
   def expense(query) do
     from t in query, where: t.type == :expense
   end

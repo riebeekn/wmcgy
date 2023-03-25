@@ -58,20 +58,75 @@ defmodule Wmcgy.Transactions do
     attrs = maybe_negate_amount(attrs)
 
     %Transaction{}
-    |> Changeset.cast(attrs, [:category_id, :description, :date, :amount, :type])
+    |> Changeset.cast(attrs, [:category_id, :description, :date, :amount, :type, :external_id])
     |> Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
   # ===========================================================================
+  def create_or_maybe_update_transaction(
+        %User{} = user,
+        %{external_id: external_id} = attrs
+      ) do
+    user
+    |> get_transaction_by_external_id(external_id)
+    |> case do
+      nil ->
+        create_transaction(user, attrs)
+        |> case do
+          {:ok, transaction} ->
+            {:ok, transaction, :created}
+
+          {:error, error} ->
+            {:error, error}
+        end
+
+      transaction ->
+        transaction
+        |> update_transaction_changeset(attrs)
+        |> maybe_update(transaction)
+    end
+  end
+
+  # ===========================================================================
+  defp maybe_update(%Changeset{changes: changes, errors: errors}, transaction)
+       when changes == %{} and errors == [],
+       do: {:ok, transaction, :noop}
+
+  defp maybe_update(changeset, _transaction) do
+    changeset
+    |> Repo.update()
+    |> case do
+      {:ok, transaction} ->
+        {:ok, transaction, :updated}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  # ===========================================================================
+  defp get_transaction_by_external_id(%User{} = user, external_id) do
+    user
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.by_external_id(external_id)
+    |> Repo.one()
+  end
+
+  # ===========================================================================
   def update_transaction(%Transaction{} = transaction, attrs) do
+    transaction
+    |> update_transaction_changeset(attrs)
+    |> Repo.update()
+  end
+
+  defp update_transaction_changeset(%Transaction{} = transaction, attrs) do
     attrs =
       attrs
       |> maybe_negate_amount()
 
     transaction
     |> Changeset.cast(attrs, [:category_id, :description, :date, :amount, :type])
-    |> Repo.update()
   end
 
   # ===========================================================================

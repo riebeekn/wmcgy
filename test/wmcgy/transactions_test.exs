@@ -233,6 +233,31 @@ defmodule Wmcgy.TransactionsTest do
       assert transaction.date == ~D[2022-01-22]
       assert transaction.amount == decimal(2.57)
       assert transaction.type == :income
+      refute transaction.external_id
+    end
+
+    test "when transaction includes an external_id, the external_id is stored", %{
+      user: user,
+      category: category
+    } do
+      attrs = %{
+        category_id: category.id,
+        description: "my transaction",
+        date: ~D[2022-01-22],
+        amount: decimal(2.57),
+        type: :income,
+        external_id: "ext_123"
+      }
+
+      assert {:ok, %Transaction{} = transaction} = Transactions.create_transaction(user, attrs)
+
+      assert transaction.user_id == user.id
+      assert transaction.category_id == category.id
+      assert transaction.description == "my transaction"
+      assert transaction.date == ~D[2022-01-22]
+      assert transaction.amount == decimal(2.57)
+      assert transaction.type == :income
+      assert transaction.external_id == "ext_123"
     end
 
     test "when transaction is an expense, amount is inserted as a negative value", %{
@@ -291,6 +316,54 @@ defmodule Wmcgy.TransactionsTest do
       assert_raise Postgrex.Error, fn ->
         Transactions.create_transaction(user, %{})
       end
+    end
+  end
+
+  describe "create_or_maybe_update_transaction/3" do
+    setup do
+      user = user_fixture()
+      category = category_fixture(user)
+
+      transaction_attrs = %{
+        description: "my transaction",
+        date: ~D[2022-01-22],
+        amount: decimal(2.57),
+        type: :income,
+        external_id: "ext_123",
+        category_id: category.id
+      }
+
+      %{user: user, transaction_attrs: transaction_attrs}
+    end
+
+    test "creates a new transaction when external_id is not found", %{
+      user: user,
+      transaction_attrs: transaction_attrs
+    } do
+      assert {:ok, %Transaction{}, :created} =
+               Transactions.create_or_maybe_update_transaction(user, transaction_attrs)
+    end
+
+    test "does not update a transaction when external_id is found and there are no changes", %{
+      user: user,
+      transaction_attrs: transaction_attrs
+    } do
+      Transactions.create_transaction(user, transaction_attrs)
+
+      assert {:ok, %Transaction{}, :noop} =
+               Transactions.create_or_maybe_update_transaction(user, transaction_attrs)
+    end
+
+    test "updates a transaction when external_id is found and there are changes", %{
+      user: user,
+      transaction_attrs: transaction_attrs
+    } do
+      Transactions.create_transaction(user, transaction_attrs)
+
+      updated_attrs = Map.put(transaction_attrs, :description, "a new description")
+
+      assert {:ok, %Transaction{}, :updated} =
+               Transactions.create_or_maybe_update_transaction(user, updated_attrs)
     end
   end
 
