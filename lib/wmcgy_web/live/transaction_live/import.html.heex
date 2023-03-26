@@ -1,0 +1,70 @@
+<.page_header_title>Import Transactions</.page_header_title>
+<!-- file upload form / submit button -->
+<.form
+  id="transaction-import"
+  for={%{}}
+  as={:transaction_import}
+  phx-change="validate"
+  phx-submit="import"
+>
+  <.file_upload uploads={@uploads} />
+  <div class="mt-4">
+    <%= if Enum.count(@uploads.transaction_data.entries) > 0 do %>
+      <.button>Start import</.button>
+    <% else %>
+      <.button disabled class="bg-zinc-300 hover:bg-zinc-300">Start import</.button>
+    <% end %>
+  </div>
+</.form>
+<!-- import progress -->
+<%= if @import_progress do %>
+  <.spinner message={status_text(@import_status)} animate?={@import_status == :importing} />
+  <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-4 md:divide-y-0 md:divide-x">
+    <.import_card
+      role="new_transactions"
+      title="New Transactions"
+      count={@import_progress.new_record_count}
+      percentage={percentage(@import_progress.current_row, @import_progress.new_record_count)}
+    />
+    <.import_card
+      role="updated_transactions"
+      title="Updated Transactions"
+      count={@import_progress.updated_record_count}
+      percentage={percentage(@import_progress.current_row, @import_progress.updated_record_count)}
+    />
+    <.import_card
+      role="duplicate_transactions"
+      title="Duplicate Transactions"
+      count={@import_progress.duplicate_record_count}
+      percentage={
+        percentage(@import_progress.current_row, @import_progress.duplicate_record_count)
+      }
+    />
+    <.import_card
+      role="invalid_rows"
+      title="Invalid Rows"
+      count={@import_progress.error_count}
+      percentage={percentage(@import_progress.current_row, @import_progress.error_count)}
+      style={:failure}
+    />
+  </dl>
+  <!-- errors -->
+  <%= if Enum.count(@import_progress.errors) > 0 do %>
+    <div class="mt-4">
+      <h3 id="import-errors-message" class="text-lg font-medium text-red-700">
+        One or more rows were invalid, these rows will not be imported, see below for details.
+      </h3>
+      <.custom_table id="import_errors" rows={@import_progress.errors}>
+        <:col :let={error} label="Row">
+          <%= error.row_number %>
+        </:col>
+        <:col :let={error} label="Error">
+          <%= error.message %>
+        </:col>
+        <:col label="Status">
+          Not imported
+        </:col>
+      </.custom_table>
+    </div>
+  <% end %>
+<% end %>

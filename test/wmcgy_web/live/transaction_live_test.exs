@@ -32,6 +32,12 @@ defmodule WmcgyWeb.TransactionLiveTest do
 
       assert redirect_map.to == ~p"/users/log_in"
     end
+
+    test "redirects to log in when attempting to access import page", %{conn: conn} do
+      assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/transactions/import")
+
+      assert redirect_map.to == "/users/log_in"
+    end
   end
 
   describe "Index" do
@@ -484,6 +490,158 @@ defmodule WmcgyWeb.TransactionLiveTest do
              |> render_click()
 
       refute has_element?(index_live, "#transactions-row-#{transaction.id}")
+    end
+  end
+
+  describe "Import" do
+    setup :register_and_log_in_user
+
+    test "file name preview is displayed after selecting a data file", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/import")
+
+      view |> upload("transactions_import_data.csv")
+
+      assert has_element?(view, "[data-role='file-path-preview']", "transactions_import_data.csv")
+    end
+
+    test "error message is displayed when the file is too big", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/import")
+
+      view |> upload("too_big.csv")
+
+      assert has_element?(
+               view,
+               "[data-role='validation-error']",
+               "File too large, max file size is 8MB"
+             )
+    end
+
+    test "error message is displayed when the header is invalid", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/import")
+
+      view
+      |> upload("bad_header.csv")
+      |> form("#transaction-import")
+      |> render_submit()
+
+      assert has_element?(
+               view,
+               "[data-role='spinner-text']",
+               "Sorry that is an invalid file, nothing imported!"
+             )
+    end
+
+    test "import stats are displayed upon success", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/import")
+
+      view
+      |> upload("transactions_import_data.csv")
+      |> form("#transaction-import")
+      |> render_submit()
+
+      assert has_element?(
+               view,
+               "[data-role='spinner-text']",
+               "Import complete"
+             )
+
+      assert has_element?(view, "[data-role='new_transactions']", "New Transactions")
+      assert has_element?(view, "[data-role='new_transactions']", "5")
+      assert has_element?(view, "[data-role='new_transactions']", "35.71%")
+
+      assert has_element?(view, "[data-role='updated_transactions']", "Updated Transactions")
+      assert has_element?(view, "[data-role='updated_transactions']", "3")
+      assert has_element?(view, "[data-role='updated_transactions']", "21.43%")
+
+      assert has_element?(view, "[data-role='duplicate_transactions']", "Duplicate Transactions")
+      assert has_element?(view, "[data-role='duplicate_transactions']", "2")
+      assert has_element?(view, "[data-role='duplicate_transactions']", "14.29%")
+
+      assert has_element?(view, "[data-role='invalid_rows']", "Invalid Rows")
+      assert has_element?(view, "[data-role='invalid_rows']", "4")
+      assert has_element?(view, "[data-role='invalid_rows']", "28.57%")
+
+      assert has_element?(
+               view,
+               "#import-errors-message",
+               "One or more rows were invalid, these rows will not be imported, see below for details."
+             )
+
+      assert has_element?(view, "#import_errors-row-0-col-0", "3")
+
+      assert has_element?(
+               view,
+               "#import_errors-row-0-col-1",
+               "Amount: can't be blank, Date: can't be blank, Id: can't be blank"
+             )
+
+      assert has_element?(view, "#import_errors-row-0-col-2", "Not imported")
+
+      assert has_element?(view, "#import_errors-row-1-col-0", "9")
+      assert has_element?(view, "#import_errors-row-1-col-1", "Category name: can't be blank")
+      assert has_element?(view, "#import_errors-row-1-col-2", "Not imported")
+
+      assert has_element?(view, "#import_errors-row-2-col-0", "12")
+
+      assert has_element?(
+               view,
+               "#import_errors-row-2-col-1",
+               "Category name: should be at least 3 character(s)"
+             )
+
+      assert has_element?(view, "#import_errors-row-2-col-2", "Not imported")
+
+      assert has_element?(view, "#import_errors-row-3-col-0", "14")
+      assert has_element?(view, "#import_errors-row-3-col-1", "Date: is invalid")
+      assert has_element?(view, "#import_errors-row-3-col-2", "Not imported")
+    end
+
+    test "import can process multiple chunks", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/transactions/import")
+
+      view
+      |> upload("transactions_import_data_multiple_chunks.csv")
+      |> form("#transaction-import")
+      |> render_submit()
+
+      # sleep to allow the chunks to process
+      Process.sleep(500)
+
+      assert has_element?(
+               view,
+               "[data-role='spinner-text']",
+               "Import complete"
+             )
+
+      assert has_element?(view, "[data-role='new_transactions']", "New Transactions")
+      assert has_element?(view, "[data-role='new_transactions']", "5")
+      assert has_element?(view, "[data-role='new_transactions']", "4.46%")
+
+      assert has_element?(view, "[data-role='updated_transactions']", "Updated Transactions")
+      assert has_element?(view, "[data-role='updated_transactions']", "38")
+      assert has_element?(view, "[data-role='updated_transactions']", "33.93%")
+
+      assert has_element?(view, "[data-role='duplicate_transactions']", "Duplicate Transactions")
+      assert has_element?(view, "[data-role='duplicate_transactions']", "37")
+      assert has_element?(view, "[data-role='duplicate_transactions']", "33.04%")
+
+      assert has_element?(view, "[data-role='invalid_rows']", "Invalid Rows")
+      assert has_element?(view, "[data-role='invalid_rows']", "32")
+      assert has_element?(view, "[data-role='invalid_rows']", "28.57%")
+    end
+
+    defp upload(view, filename) do
+      view
+      |> file_input("#transaction-import", :transaction_data, [
+        %{
+          name: filename,
+          content: File.read!("test/support/data/#{filename}"),
+          type: "text/csv"
+        }
+      ])
+      |> render_upload(filename)
+
+      view
     end
   end
 end

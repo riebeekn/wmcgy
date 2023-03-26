@@ -125,6 +125,93 @@ defmodule WmcgyWeb.CustomComponents do
 
   # ===========================================================================
   @doc """
+  Renders a spinner with an optional message
+
+  ## Examples
+    <.spinner message="Importing..." animate?={true} />
+  """
+  attr :animate?, :boolean, default: false
+  attr :message, :string, default: ""
+
+  def spinner(assigns) do
+    ~H"""
+    <div class="flex justify-center text-2xl text-emerald-700 pt-12" data-role="spinner-text">
+      <%= @message %>
+    </div>
+    <div class="flex items-center justify-center pt-2">
+      <WmcgyWeb.CoreComponents.icon
+        name="hero-cog-8-tooth"
+        class={"h-16 w-16 text-emerald-500 #{if @animate?, do: "animate-spin", else: ""}"}
+      />
+    </div>
+    """
+  end
+
+  # ===========================================================================
+  @doc """
+  Renders a file upload dialog
+
+  ## Examples
+    <.file_upload uploads={@uploads} />
+  """
+  attr :uploads, :any, required: true
+
+  def file_upload(assigns) do
+    ~H"""
+    <%= for {_ref, err} <- @uploads.transaction_data.errors do %>
+      <div class="rounded-md bg-red-100 p-4 mb-4">
+        <p data-role="validation-error" class="text-sm font-medium text-red-800">
+          <%= friendly_error(err) %>
+        </p>
+      </div>
+    <% end %>
+    <!-- upload dialog -->
+    <div
+      phx-drop-target={@uploads.transaction_data.ref}
+      class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5"
+    >
+      <div class="mt-1 sm:mt-0 sm:col-span-2">
+        <div class="max-w-2xl flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+          <div class="space-y-1 text-center">
+            <WmcgyWeb.CoreComponents.icon
+              name="hero-document-arrow-up"
+              class="mx-auto h-12 w-12 text-gray-400"
+            />
+
+            <div class="flex text-sm text-gray-600">
+              <label
+                for={@uploads.transaction_data.ref}
+                class="relative cursor-pointer font-medium text-green-700 hover:text-green-600"
+              >
+                <span>Upload a file</span>
+                <%= live_file_input(@uploads.transaction_data, class: "sr-only") %>
+                <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+              </label>
+              <p class="pl-1">or drag and drop</p>
+            </div>
+            <p class="text-xs text-gray-500">
+              CSV, TXT up to 8MB
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- selected file -->
+    <%= for entry <- @uploads.transaction_data.entries do %>
+      <div data-role="file-path-preview" class="pt-3 flex text-sm font-medium">
+        <div class="text-gray-500">Selected file:</div>
+        <div class="text-gray-900 ml-2"><%= entry.client_name %></div>
+      </div>
+    <% end %>
+    """
+  end
+
+  defp friendly_error(:too_large), do: "File too large, max file size is 8MB."
+  defp friendly_error(:too_many_files), do: "Too many files."
+  defp friendly_error(:not_accepted), do: "Unacceptable file type, only txt / csv allowed."
+
+  # ===========================================================================
+  @doc """
   Renders a table.
   ## Examples
 

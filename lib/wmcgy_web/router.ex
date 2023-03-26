@@ -68,6 +68,7 @@ defmodule WmcgyWeb.Router do
       live "/transactions", TransactionLive.Index, :list
       live "/transactions/new", TransactionLive.New, :new
       live "/transactions/:id/edit", TransactionLive.Edit, :edit
+      live "/transactions/import", TransactionLive.Import, :import
 
       # Categories routes
       live "/categories", CategoryLive.Index, :index

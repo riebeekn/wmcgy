@@ -3,7 +3,9 @@ defmodule Wmcgy do
   API for the application, all calls from the front-end should go thru
   this module vs directly calling into individual context modules.
   """
-  use Boundary, deps: [WmcgySchema, WmcgyUtilities], exports: [Accounts, Accounts.User]
+  use Boundary,
+    deps: [WmcgySchema, WmcgyUtilities],
+    exports: [Accounts, Accounts.User, TransactionImport.ImportProgress]
 
   alias Wmcgy.Accounts.User
   alias Wmcgy.Reports.CategoryReport

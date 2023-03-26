@@ -52,6 +52,7 @@ defmodule WmcgyWeb.NavbarComponents do
         </div>
         <div class="mt-3 px-2 space-y-1">
           <.mobile_menu_link link_text="Account" href={~p"/users/settings"} />
+          <.mobile_menu_link link_text="Import Transactions" href={~p"/transactions/import"} />
           <.mobile_menu_link link_text="Sign out" href={~p"/users/log_out"} method="delete" />
         </div>
       </div>
@@ -92,6 +93,11 @@ defmodule WmcgyWeb.NavbarComponents do
       />
       <.user_settings_drop_down_link
         id="user-menu-item-1"
+        link_text="Import Transactions"
+        href={~p"/transactions/import"}
+      />
+      <.user_settings_drop_down_link
+        id="user-menu-item-2"
         link_text="Sign out"
         href={~p"/users/log_out"}
         method="delete"
