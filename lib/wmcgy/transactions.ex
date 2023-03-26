@@ -39,6 +39,15 @@ defmodule Wmcgy.Transactions do
   end
 
   # ===========================================================================
+  def list_transactions_for_export(%User{} = user) do
+    user
+    |> Query.Transactions.for_user()
+    |> Query.Transactions.include_category()
+    |> Query.Transactions.sort_by(:date, :asc)
+    |> Repo.all()
+  end
+
+  # ===========================================================================
   def get_transaction!(%User{} = user, id) do
     user
     |> Query.Transactions.for_user()

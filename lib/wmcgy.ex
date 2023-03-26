@@ -58,6 +58,9 @@ defmodule Wmcgy do
           })
   defdelegate list_transactions(user, opts \\ []), to: Wmcgy.Transactions
 
+  @spec list_transactions_for_export(user :: User.t()) :: list(Transaction.t())
+  defdelegate list_transactions_for_export(user), to: Wmcgy.Transactions
+
   @spec get_transaction!(user :: User.t(), id :: pos_integer()) ::
           Transaction.t() | Ecto.NoResultsError
   defdelegate get_transaction!(user, id), to: Wmcgy.Transactions

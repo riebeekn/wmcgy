@@ -58,6 +58,8 @@ defmodule WmcgyWeb.Router do
   scope "/", WmcgyWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    post "/transactions/export", TransactionExportController, :create
+
     live_session :require_authenticated_user,
       on_mount: [
         {WmcgyWeb.UserAuth, :ensure_authenticated},

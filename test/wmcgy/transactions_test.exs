@@ -149,6 +149,54 @@ defmodule Wmcgy.TransactionsTest do
     end
   end
 
+  describe "list_transactions_for_export/1" do
+    setup do
+      user_1 = user_fixture()
+      user_2 = user_fixture()
+
+      category_1 = category_fixture(user_1, "first category")
+      category_2 = category_fixture(user_1, "second category")
+      category_3 = category_fixture(user_1, "third category")
+
+      two_days_ago = Date.utc_today() |> Date.add(-2)
+      three_days_ago = Date.utc_today() |> Date.add(-3)
+      four_days_ago = Date.utc_today() |> Date.add(-4)
+      transaction_1 = transaction_fixture(user_1, category_2, %{date: three_days_ago, amount: 14})
+      transaction_2 = transaction_fixture(user_1, category_1, %{date: four_days_ago, amount: 12})
+      transaction_3 = transaction_fixture(user_1, category_3, %{date: two_days_ago, amount: 3})
+      transaction_4 = transaction_fixture(user_1, category_2, %{date: two_days_ago, amount: 4})
+      _transaction_5 = transaction_fixture(user_2, category_fixture(user_2))
+
+      [
+        user: user_1,
+        transaction_1: transaction_1,
+        transaction_2: transaction_2,
+        transaction_3: transaction_3,
+        transaction_4: transaction_4
+      ]
+    end
+
+    test "returns all transaction for the specified user ordered by transaction date, then id asc",
+         %{
+           user: user,
+           transaction_1: transaction_1,
+           transaction_2: transaction_2,
+           transaction_3: transaction_3,
+           transaction_4: transaction_4
+         } do
+      transactions = Transactions.list_transactions_for_export(user)
+
+      assert Enum.count(transactions) == 4
+
+      assert transactions == [
+               transaction_2 |> Repo.preload(:category),
+               transaction_1 |> Repo.preload(:category),
+               transaction_3 |> Repo.preload(:category),
+               transaction_4 |> Repo.preload(:category)
+             ]
+    end
+  end
+
   describe "get_transaction!/2" do
     setup do
       user = user_fixture()

@@ -6,6 +6,13 @@ defmodule WmcgyWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.page_header_title>Account</.page_header_title>
+    <.link
+      class="font-semibold text-sm text-emerald-700 hover:underline"
+      href={~p"/transactions/export"}
+      method="post"
+    >
+      Export your transaction data as a CSV
+    </.link>
     <div class="bg-white p-4 mt-4 rounded-xl">
       <.header>Change Email</.header>
 
