@@ -112,7 +112,7 @@ defmodule WmcgyWeb.UserResetPasswordLiveTest do
         |> render_click()
         |> follow_redirect(conn, ~p"/users/register")
 
-      assert conn.resp_body =~ "Register"
+      assert conn.resp_body =~ "Sorry we aren't accepting new registrations right now!"
     end
   end
 end
