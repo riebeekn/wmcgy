@@ -8,7 +8,7 @@ defmodule Wmcgy.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Wmcgy", "contact@example.com"})
+      |> from({"Wmcgy", "nick.riebeek@gmail.com"})
       |> subject(subject)
       |> text_body(body)
 
