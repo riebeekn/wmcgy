@@ -26,6 +26,7 @@
         options={Enum.map(@categories, &{&1.name, &1.id})}
         type="select"
         label="Category"
+        prompt=""
       />
       <.input field={@form[:description]} type="text" label="Description" />
       <.input field={@form[:amount]} type="currency" label="Amount" />
