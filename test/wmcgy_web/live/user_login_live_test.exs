@@ -66,7 +66,7 @@ defmodule WmcgyWeb.UserLoginLiveTest do
         |> render_click()
         |> follow_redirect(conn, ~p"/users/register")
 
-      assert login_html =~ "Register"
+      assert login_html =~ "Sorry we aren&#39;t accepting new registrations right now!"
     end
 
     test "redirects to forgot password page when the Forgot Password button is clicked", %{
