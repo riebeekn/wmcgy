@@ -107,10 +107,17 @@ if config_env() == :prod do
   #       api_key: System.get_env("MAILGUN_API_KEY"),
   #       domain: System.get_env("MAILGUN_DOMAIN")
   #
+  config :wmcgy, Wmcgy.Mailer,
+    adapter: Swoosh.Adapters.Sendinblue,
+    api_key: System.get_env("SENDINBLUE_API_KEY")
+
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
   #
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  config :swoosh,
+    api_client: Swoosh.ApiClient.Finch,
+    finch_name: Wmcgy.Finch
 end
