@@ -10,7 +10,7 @@ processes = []
   release_command = "/app/bin/migrate"
 
 [env]
-  PHX_HOST = "wmcgy2.fly.dev"
+  PHX_HOST = "wheredidmycashgoyo.com"
   PORT = "8080"
 
 [experimental]
