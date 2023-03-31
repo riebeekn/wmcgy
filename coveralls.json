@@ -2,6 +2,7 @@
   "skip_files": [
     "test",
     "lib/wmcgy/application.ex",
+    "lib/wmcgy/release.ex",
     "lib/wmcgy_web/components/core_components.ex",
     "lib/wmcgy_web/router.ex",
     "lib/wmcgy_web/telemetry.ex"
