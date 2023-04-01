@@ -17,6 +17,11 @@ defmodule WmcgyWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/", WmcgyWeb do
+    pipe_through :browser
+    get "/", LandingPageController, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", WmcgyWeb do
   #   pipe_through :api
@@ -66,8 +71,7 @@ defmodule WmcgyWeb.Router do
         {WmcgyWeb.InjectWallDate, :assign_local_wall_date}
       ] do
       # Transactions routes
-      live "/", TransactionLive.Index, :index
-      live "/transactions", TransactionLive.Index, :list
+      live "/transactions", TransactionLive.Index, :index
       live "/transactions/new", TransactionLive.New, :new
       live "/transactions/:id/edit", TransactionLive.Edit, :edit
       live "/transactions/import", TransactionLive.Import, :import
