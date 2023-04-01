@@ -42,7 +42,7 @@ defmodule WmcgyWeb.NavbarComponents do
     ~H"""
     <div class="hidden sm:hidden" id="mobile-menu">
       <div class="space-y-1 px-2 pt-2 pb-3">
-        <.mobile_menu_link link_text="Transactions" href={~p"/"} />
+        <.mobile_menu_link link_text="Transactions" href={~p"/transactions"} />
         <.mobile_menu_link link_text="Categories" href={~p"/categories"} />
         <.mobile_menu_link link_text="Reports" href={~p"/reports"} />
       </div>
@@ -174,7 +174,7 @@ defmodule WmcgyWeb.NavbarComponents do
       <.logo />
       <div class="hidden sm:ml-6 sm:block">
         <div class="flex space-x-4">
-          <.main_menu_link link_text="Transactions" href={~p"/"} />
+          <.main_menu_link link_text="Transactions" href={~p"/transactions"} />
           <.main_menu_link link_text="Categories" href={~p"/categories"} />
           <.main_menu_link link_text="Reports" href={~p"/reports"} />
         </div>

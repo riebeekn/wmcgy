@@ -28,9 +28,11 @@ defmodule WmcgyWeb.CustomComponents do
   ## Examples
     <.logo />
   """
+  attr :color, :string, default: "text-emerald-600"
+
   def logo(assigns) do
     ~H"""
-    <div class="text-center text-emerald-500 ml-2 font-semi-bold text-5xl font-lobster">Wmcgy</div>
+    <div class={"text-center #{@color} ml-2 font-semi-bold text-5xl font-lobster"}>Wmcgy</div>
     """
   end
 
