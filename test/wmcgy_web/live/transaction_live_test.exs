@@ -12,7 +12,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
 
   describe "when not logged in" do
     test "redirects to log in when attempting to access page", %{conn: conn} do
-      assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/")
+      assert {:error, {:redirect, redirect_map}} = live(conn, ~p"/transactions")
       assert redirect_map.to == ~p"/users/log_in"
     end
 
@@ -73,7 +73,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
       transactions_for_first_page: transactions_for_first_page,
       transactions_for_second_page: transactions_for_second_page
     } do
-      {:ok, view, _html} = live(conn, ~p"/")
+      {:ok, view, _html} = live(conn, ~p"/transactions")
 
       Enum.each(
         transactions_for_first_page,
@@ -222,7 +222,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
       transactions_for_first_page: transactions_for_first_page,
       transactions_for_second_page: transactions_for_second_page
     } do
-      {:ok, view, _html} = live(conn, ~p"/")
+      {:ok, view, _html} = live(conn, ~p"/transactions")
 
       view
       |> element("#transactions-top-pager button", "Next")
@@ -288,7 +288,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
       transactions_for_first_page: transactions_for_first_page,
       transactions_for_second_page: transactions_for_second_page
     } do
-      {:ok, view, _html} = live(conn, ~p"/")
+      {:ok, view, _html} = live(conn, ~p"/transactions")
 
       view
       |> element("#transactions-top-pager button", "Previous")
@@ -365,7 +365,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
       Repo.delete_all(Transaction)
       Repo.delete_all(Category)
 
-      {:ok, _view, html} = live(conn, ~p"/")
+      {:ok, _view, html} = live(conn, ~p"/transactions")
 
       assert html =~ "Welcome to WMCGY!"
       assert html =~ "Start things off by creating some categories."
@@ -400,7 +400,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
           }
         })
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, ~p"/transactions")
 
       assert html =~ "Transaction created"
       assert html =~ "a description for our transaction!"
@@ -451,7 +451,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
           }
         })
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, ~p"/transactions")
 
       assert html =~ "Transaction updated"
       assert html =~ "an updated description for our transaction!"
@@ -483,7 +483,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
     end
 
     test "deletes transaction in listing", %{conn: conn, transaction: transaction} do
-      {:ok, index_live, _html} = live(conn, ~p"/")
+      {:ok, index_live, _html} = live(conn, ~p"/transactions")
 
       assert index_live
              |> element("#transactions-row-#{transaction.id} a", "Delete")
