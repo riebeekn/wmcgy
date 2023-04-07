@@ -19,6 +19,7 @@ defmodule WmcgyWeb.Router do
 
   scope "/", WmcgyWeb do
     pipe_through :browser
+
     get "/", LandingPageController, :index
   end
 
@@ -43,8 +44,6 @@ defmodule WmcgyWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
-
-  ## Authentication routes
 
   scope "/", WmcgyWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]

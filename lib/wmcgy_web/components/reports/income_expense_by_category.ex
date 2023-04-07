@@ -5,7 +5,6 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByCategory do
   use WmcgyWeb, :live_component
 
   alias Number.Currency
-  alias Phoenix.LiveView.JS
   alias WmcgyUtilities.DateHelpers
 
   # ===========================================================================
@@ -14,7 +13,9 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByCategory do
     {:ok,
      assign(socket,
        income_table_data: [],
-       expense_table_data: []
+       expense_table_data: [],
+       expense_total: nil,
+       income_total: nil
      )}
   end
 
@@ -98,12 +99,5 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByCategory do
       values: Enum.map(income_data.line_items, & &1.amount),
       percentages: Enum.map(income_data.line_items, & &1.percentage)
     })
-  end
-
-  # ===========================================================================
-  defp toggle_details(js \\ %JS{}) do
-    js
-    |> WmcgyWeb.CoreComponents.toggle("#expense_details")
-    |> WmcgyWeb.CoreComponents.toggle("#income_details")
   end
 end

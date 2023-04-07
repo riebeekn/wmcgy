@@ -106,18 +106,14 @@ defmodule WmcgyWeb.CustomComponents do
       |> assign(:hook, hook_from_type(assigns))
 
     ~H"""
-    <div>
-      <h3 class="text-lg font-medium text-gray-900"><%= @title %></h3>
-      <canvas
-        id={@id}
-        phx-hook={@hook}
-        phx-update="ignore"
-        data-changed-event={@data_changed_event}
-        data-chart-data={Jason.encode!(@chart_data)}
-        class="max-w-lg"
-      >
-      </canvas>
-    </div>
+    <canvas
+      id={@id}
+      phx-hook={@hook}
+      phx-update="ignore"
+      data-changed-event={@data_changed_event}
+      data-chart-data={Jason.encode!(@chart_data)}
+    >
+    </canvas>
     """
   end
 
@@ -368,6 +364,7 @@ defmodule WmcgyWeb.CustomComponents do
   end
 
   # ===========================================================================
+  def highlight_if_loss(nil), do: ""
   def highlight_if_loss(""), do: ""
 
   def highlight_if_loss(val) do

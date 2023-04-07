@@ -1,6 +1,7 @@
-<div class="mt-6">
-  <!-- Filters / controls -->
-  <div class="grid sm:grid-cols-2 lg:grid-cols-3 items-center">
+<div class="mt-4 p-4 bg-emerald-600 rounded-lg overflow-hidden shadow">
+  <h3 class="text-white text-2xl font-bold px-2 pb-2">Category reports</h3>
+  <!-- Date filters -->
+  <div class="md:flex items-baseline bg-white">
     <.form
       :let={f}
       id="start_date_form"
@@ -9,11 +10,14 @@
       phx-change="start-date-changed"
       phx-target={@myself}
     >
-      <div class="flex items-baseline space-x-2">
+      <div class="px-2 pt-1 pb-2 ml-4 flex items-baseline">
         <.label for="start_date">Start date:</.label>
-        <.input field={f[:start_date]} type="date" value={@start_date_string} />
+        <span class="ml-2">
+          <.input field={f[:start_date]} type="date" value={@start_date_string} />
+        </span>
       </div>
     </.form>
+
     <.form
       :let={f}
       id="end_date_form"
@@ -22,29 +26,51 @@
       phx-change="end-date-changed"
       phx-target={@myself}
     >
-      <div class="flex items-baseline space-x-2 row-start-2 lg:row-start-1">
-        <span class="mr-2 lg:mr-0">
-          <.label for="end_date">End date:</.label>
+      <div class="px-2 pt-1 pb-2 ml-4 flex items-baseline">
+        <.label for="end_date">End date:</.label>
+        <span class="ml-4 md:ml-2">
+          <.input field={f[:end_date]} type="date" value={@end_date_string} />
         </span>
-        <.input field={f[:end_date]} type="date" value={@end_date_string} />
       </div>
     </.form>
-    <div class="mt-2 row-start-1 col-start-2 lg:col-start-3">
-      <.button phx-click={toggle_details()}>Show / hide details</.button>
-    </div>
   </div>
-  <!-- Charts -->
-  <div class="grid lg:grid-cols-2 px-2 mt-6">
-    <div class="mr-2">
-      <.chart
-        id="expense-chart"
-        type="pie"
-        title="Expenses"
-        data_changed_event={:expense_chart_update}
-      />
+  <!-- Stat bars -->
+  <div>
+    <dl class="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div class="bg-white px-4 py-5 sm:p-6">
+        <dt class="truncate text-sm font-semibold text-gray-900">Total Expenses</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-red-700">
+          <%= @expense_total |> Currency.number_to_currency() %>
+        </dd>
+      </div>
+
+      <div class="bg-white px-4 py-5 sm:p-6">
+        <dt class="truncate text-sm font-semibold text-gray-900">Total Income</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+          <%= @income_total |> Currency.number_to_currency() %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+  <!-- Charts and tables -->
+  <div class="grid lg:grid-cols-2 mt-4">
+    <div class="lg:mr-2 bg-white">
+      <div>
+        <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-gray-900">Expenses</h3>
+        <div class="p-2 flex justify-center">
+          <div>
+            <.chart
+              id="expense-chart"
+              type="pie"
+              title="Expenses"
+              data_changed_event={:expense_chart_update}
+            />
+          </div>
+        </div>
+      </div>
       <!-- expense details table -->
       <%= if Enum.count(@expense_table_data) > 0 do %>
-        <div id="expense_details" class="hidden">
+        <div id="expense_details">
           <.custom_table
             id="expenses_table_data"
             rows={@expense_table_data}
@@ -66,32 +92,40 @@
         </div>
       <% end %>
     </div>
-    <div class="ml-2 mt-6 lg:mt-0">
-      <.chart
-        id="income-chart"
-        type="pie"
-        title="Income"
-        data_changed_event={:income_chart_update}
-      />
-      <!-- income details table -->
-      <%= if Enum.count(@income_table_data) > 0 do %>
-        <div id="income_details" class="hidden">
-          <.custom_table id="income_table_data" rows={@income_table_data} include_footer?={true}>
-            <:col :let={income} label="Category">
-              <%= income.category_name %>
-            </:col>
-            <:col :let={income} label="Amount">
-              <%= income.amount |> Currency.number_to_currency() %>
-            </:col>
-            <:footer_col>
-              Total
-            </:footer_col>
-            <:footer_col>
-              <%= @income_total |> Currency.number_to_currency() %>
-            </:footer_col>
-          </.custom_table>
+
+    <div class="lg:ml-2">
+      <div class="bg-white pt-2">
+        <h3 class="mt-2 ml-6 truncate text-sm font-semibold text-gray-900">Income</h3>
+        <div class=" p-2 flex justify-center">
+          <div>
+            <.chart
+              id="income-chart"
+              type="pie"
+              title="Income"
+              data_changed_event={:income_chart_update}
+            />
+          </div>
         </div>
-      <% end %>
+        <!-- income details table -->
+        <%= if Enum.count(@income_table_data) > 0 do %>
+          <div id="income_details">
+            <.custom_table id="income_table_data" rows={@income_table_data} include_footer?={true}>
+              <:col :let={income} label="Category">
+                <%= income.category_name %>
+              </:col>
+              <:col :let={income} label="Amount">
+                <%= income.amount |> Currency.number_to_currency() %>
+              </:col>
+              <:footer_col>
+                Total
+              </:footer_col>
+              <:footer_col>
+                <%= @income_total |> Currency.number_to_currency() %>
+              </:footer_col>
+            </.custom_table>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
