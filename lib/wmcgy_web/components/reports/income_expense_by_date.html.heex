@@ -1,6 +1,7 @@
-<div class="mt-6">
+<div class="mt-12 p-4 bg-emerald-600 rounded-lg overflow-hidden shadow">
+  <h3 class="text-white text-2xl font-bold px-2 pb-2">Date reports</h3>
   <!-- Filters / controls -->
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 items-baseline">
+  <div class="bg-white">
     <.form
       :let={f}
       id="date_options"
@@ -9,37 +10,69 @@
       phx-change="date-option-selected"
       phx-target={@myself}
     >
-      <div class="flex items-baseline space-x-2">
+      <div class="px-2 pt-1 pb-2 ml-4 flex items-baseline">
         <.label for="date_option">Show:</.label>
-        <.input
-          field={f[:date_option]}
-          options={Enum.map(@date_options, &{&1.label, &1.id})}
-          type="select"
-          value={@current_date_option}
-        />
+        <span class="ml-2 w-48">
+          <.input
+            field={f[:date_option]}
+            options={Enum.map(@date_options, &{&1.label, &1.id})}
+            type="select"
+            value={@current_date_option}
+          />
+        </span>
       </div>
     </.form>
-    <div class="mt-2 sm:mt-0">
-      <.button phx-click={toggle_details()}>Show / hide details</.button>
-    </div>
   </div>
-  <!-- Charts -->
-  <div class="grid lg:grid-cols-2 px-2 mt-6">
-    <div class="mr-2">
-      <.chart
-        id="income-expense-chart"
-        type="line"
-        title="Overall income and expenses"
-        data_changed_event={:income_expense_chart_update}
-      />
+  <!-- Stat bars -->
+  <div>
+    <dl class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-3">
+      <div class=" bg-white px-4 py-5  sm:p-6">
+        <dt class="truncate text-sm font-semibold text-gray-900">Total Income</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 ">
+          <%= @income_total |> Currency.number_to_currency() %>
+        </dd>
+      </div>
+
+      <div class=" bg-white px-4 py-5  sm:p-6">
+        <dt class="truncate text-sm font-semibold text-gray-900">Total Expenses</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-red-700">
+          <%= @expense_total |> Currency.number_to_currency() %>
+        </dd>
+      </div>
+
+      <div class=" bg-white px-4 py-5  sm:p-6">
+        <dt class="truncate text-sm font-semibold text-gray-900">Total Profit/Loss</dt>
+        <dd class={"mt-1 text-3xl font-semibold tracking-tight #{highlight_if_loss(@profit_loss_total)}"}>
+          <%= @profit_loss_total |> Currency.number_to_currency() %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+  <!-- Charts and tables -->
+  <div class="grid lg:grid-cols-2 mt-4">
+    <div class="lg:mr-2 bg-white">
+      <div>
+        <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-gray-900">
+          Overall income and expenses
+        </h3>
+
+        <div class="p-2">
+          <.chart
+            id="income-expense-chart"
+            type="line"
+            title="Overall income and expenses"
+            data_changed_event={:income_expense_chart_update}
+          />
+        </div>
+      </div>
       <%= if Enum.count(@income_expense_table_data) > 0 do %>
-        <div id="income-expense-details" class="hidden">
+        <div id="income-expense-details">
           <.custom_table
             id="income_expense_table_data"
             rows={@income_expense_table_data}
             include_footer?={true}
           >
-            <:col :let={income_expense} label="">
+            <:col :let={income_expense} label="Period">
               <%= month_or_year_label(income_expense) %>
             </:col>
             <:col :let={income_expense} label="Income">
@@ -61,21 +94,28 @@
         </div>
       <% end %>
     </div>
-    <div class="ml-2 mt-6 lg:mt-0">
-      <.chart
-        id="profit-loss-chart"
-        type="bar"
-        title="Overall profit / loss"
-        data_changed_event={:profit_loss_chart_update}
-      />
+    <div class="lg:ml-2 mt-6 lg:mt-0 bg-white">
+      <div class="bg-white ">
+        <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-gray-900">
+          Overall profit / loss
+        </h3>
+        <div class="p-2 mb-1">
+          <.chart
+            id="profit-loss-chart"
+            type="bar"
+            title="Overall profit / loss"
+            data_changed_event={:profit_loss_chart_update}
+          />
+        </div>
+      </div>
       <%= if Enum.count(@income_expense_table_data) > 0 do %>
-        <div id="profit-loss-details" class="hidden">
+        <div id="profit-loss-details">
           <.custom_table
             id="profit_loss_table_data"
             rows={@income_expense_table_data}
             include_footer?={true}
           >
-            <:col :let={income_expense} label="">
+            <:col :let={income_expense} label="Period">
               <%= month_or_year_label(income_expense) %>
             </:col>
             <:col :let={income_expense} label="Profit / Loss">

@@ -5,14 +5,20 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByDate do
   use WmcgyWeb, :live_component
 
   alias Number.Currency
-  alias Phoenix.LiveView.JS
   alias WmcgyUtilities.DateHelpers
 
   # ===========================================================================
   @impl true
   def mount(socket) do
     {:ok,
-     assign(socket, date_options: [], current_date_option: nil, income_expense_table_data: [])}
+     assign(socket,
+       date_options: [],
+       current_date_option: nil,
+       income_expense_table_data: [],
+       income_total: nil,
+       expense_total: nil,
+       profit_loss_total: nil
+     )}
   end
 
   # ===========================================================================
@@ -195,11 +201,4 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByDate do
   # ===========================================================================
   defp month_or_year_label(%{month: month}), do: month |> DateHelpers.month_shortname()
   defp month_or_year_label(%{year: year}), do: year
-
-  # ===========================================================================
-  defp toggle_details(js \\ %JS{}) do
-    js
-    |> WmcgyWeb.CoreComponents.toggle("#income-expense-details")
-    |> WmcgyWeb.CoreComponents.toggle("#profit-loss-details")
-  end
 end

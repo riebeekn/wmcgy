@@ -22,16 +22,18 @@ defmodule WmcgyWeb.ReportLive.Index do
         today={@today}
       />
     </.flex_container>
-    <%= live_component(WmcgyWeb.Components.Reports.IncomeExpenseByCategory,
-      id: :income_expense_by_category,
-      current_user: @current_user,
-      today: @today
-    ) %>
-    <%= live_component(WmcgyWeb.Components.Reports.IncomeExpenseByDate,
-      id: :income_expense_by_date,
-      current_user: @current_user,
-      today: @today
-    ) %>
+    <.live_component
+      module={WmcgyWeb.Components.Reports.IncomeExpenseByCategory}
+      id="income_expense_by_category"
+      current_user={@current_user}
+      today={@today}
+    />
+    <.live_component
+      module={WmcgyWeb.Components.Reports.IncomeExpenseByDate}
+      id="income_expense_by_date"
+      current_user={@current_user}
+      today={@today}
+    />
     """
   end
 end

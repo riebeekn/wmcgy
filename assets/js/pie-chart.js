@@ -42,10 +42,7 @@ class PieChart {
             font: {
               weight: "bold",
             },
-            align: "end",
-            padding: {
-              right: -20,
-            },
+            align: "center",
             formatter: (value, ctx) => {
               let label = ctx.chart.data.labels[ctx.dataIndex];
               label = truncateString(label, 15);
