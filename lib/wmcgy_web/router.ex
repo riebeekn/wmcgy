@@ -18,7 +18,7 @@ defmodule WmcgyWeb.Router do
   end
 
   scope "/", WmcgyWeb do
-    pipe_through :browser
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     get "/", LandingPageController, :index
   end
