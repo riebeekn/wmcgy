@@ -12,7 +12,12 @@ defmodule WmcgyWeb.TransactionLive.Import do
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(uploaded_files: [], import_progress: nil, import_status: :resting)
+     |> assign(
+       uploaded_files: [],
+       import_progress: nil,
+       import_status: :resting,
+       page_title: "Import Transactions"
+     )
      |> allow_upload(:transaction_data, accept: ~w(.txt .csv), max_entries: 1)}
   end
 
