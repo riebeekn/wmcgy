@@ -10,10 +10,15 @@
       phx-change="start-date-changed"
       phx-target={@myself}
     >
-      <div class="px-2 pt-1 pb-2 ml-4 flex items-baseline">
+      <div class="px-2 pt-1 pb-3 ml-4 flex items-baseline">
         <.label for="start_date">Start date:</.label>
         <span class="ml-2">
-          <.input field={f[:start_date]} type="date" value={@start_date_string} />
+          <.input
+            field={f[:start_date]}
+            type="date"
+            value={@start_date_string}
+            external_label={true}
+          />
         </span>
       </div>
     </.form>
@@ -29,7 +34,7 @@
       <div class="px-2 pt-1 pb-2 ml-4 flex items-baseline">
         <.label for="end_date">End date:</.label>
         <span class="ml-4 md:ml-2">
-          <.input field={f[:end_date]} type="date" value={@end_date_string} />
+          <.input field={f[:end_date]} type="date" value={@end_date_string} external_label={true} />
         </span>
       </div>
     </.form>

@@ -281,6 +281,7 @@ defmodule WmcgyWeb.CoreComponents do
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
+  attr :external_label, :boolean, default: false
   attr :value, :any
 
   attr :type, :string,
@@ -422,9 +423,13 @@ defmodule WmcgyWeb.CoreComponents do
     """
   end
 
+  # TODO: potentially take the label out of here?
   def input(%{type: "date"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div
+      phx-feedback-for={@name}
+      class={if @external_label, do: "flex items-baseline md:space-x-2", else: ""}
+    >
       <.label for={@id}><%= @label %></.label>
       <input
         type="text"
