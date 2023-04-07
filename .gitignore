@@ -40,3 +40,7 @@ npm-debug.log
 
 # Ignore .tool-versions
 .tool-versions
+
+# Ignore dialyzer stuff
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
