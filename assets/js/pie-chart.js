@@ -7,7 +7,6 @@ import {
   TOOLTIP_BG_COLOR,
   TOOLTIP_TEXT_COLOR,
   toCurrency,
-  truncateString,
 } from "./chart-helpers";
 
 class PieChart {
@@ -45,7 +44,7 @@ class PieChart {
             align: "center",
             formatter: (value, ctx) => {
               let label = ctx.chart.data.labels[ctx.dataIndex];
-              label = truncateString(label, 15);
+              label = this.truncateString(label, 15);
               let percentage =
                 ctx.chart.data.datasets[0].percentage[ctx.dataIndex] ?? 0;
 
@@ -93,6 +92,14 @@ class PieChart {
     };
 
     this.chart.update();
+  }
+
+  truncateString(str, num) {
+    if (str?.length > num) {
+      return str.slice(0, num) + "...";
+    } else {
+      return str;
+    }
   }
 }
 

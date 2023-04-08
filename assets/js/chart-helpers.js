@@ -30,14 +30,6 @@ function toCurrency(value) {
   return formatter.format(value);
 }
 
-function truncateString(str, num) {
-  if (str?.length > num) {
-    return str.slice(0, num) + "...";
-  } else {
-    return str;
-  }
-}
-
 function updateChartDatasets(chart, labels, datasets) {
   datasets?.forEach((dataset, i) => {
     dataset.fill = false;
@@ -60,6 +52,5 @@ export {
   TOOLTIP_BG_COLOR,
   basicTooltip,
   toCurrency,
-  truncateString,
   updateChartDatasets,
 };
