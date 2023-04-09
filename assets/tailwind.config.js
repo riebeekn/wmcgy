@@ -7,6 +7,7 @@ const path = require("path");
 
 module.exports = {
   content: ["./js/**/*.js", "../lib/*_web.ex", "../lib/*_web/**/*.*ex"],
+  safelist: ["md:grid-cols-2", "md:grid-cols-3"],
   theme: {
     extend: {
       fontFamily: {

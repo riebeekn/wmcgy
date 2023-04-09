@@ -42,7 +42,7 @@ defmodule WmcgyWeb.CustomComponents do
   def stats_container(assigns) do
     ~H"""
     <div>
-      <dl class={"mt-4 grid grid-cols-1 gap-5 sm:grid-cols-#{@columns}"}>
+      <dl class={"mt-4 grid grid-cols-1 gap-5 md:grid-cols-#{@columns}"}>
         <%= for stat <- @stat do %>
           <div class="bg-white px-4 py-5 sm:p-6">
             <dt class="truncate text-sm font-semibold text-gray-900"><%= stat.label %></dt>
