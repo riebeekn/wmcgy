@@ -6,6 +6,7 @@ defmodule WmcgyWeb.Components.Reports.IncomeExpenseByDate do
 
   alias Number.Currency
   alias WmcgyUtilities.DateHelpers
+  alias WmcgyWeb.Components.Reports.Layout
 
   # ===========================================================================
   @impl true

@@ -4,6 +4,8 @@ defmodule WmcgyWeb.ReportLive.Index do
   """
   use WmcgyWeb, :live_view
 
+  alias WmcgyWeb.Components.Reports.Layout
+
   # ===========================================================================
   @impl true
   def mount(_params, _session, socket) do
@@ -22,18 +24,24 @@ defmodule WmcgyWeb.ReportLive.Index do
         today={@today}
       />
     </.flex_container>
-    <.live_component
-      module={WmcgyWeb.Components.Reports.IncomeExpenseByCategory}
-      id="income_expense_by_category"
-      current_user={@current_user}
-      today={@today}
-    />
-    <.live_component
-      module={WmcgyWeb.Components.Reports.IncomeExpenseByDate}
-      id="income_expense_by_date"
-      current_user={@current_user}
-      today={@today}
-    />
+    <Layout.report_section_container title="Category reports">
+      <.live_component
+        module={WmcgyWeb.Components.Reports.IncomeExpenseByCategory}
+        id="income_expense_by_category"
+        current_user={@current_user}
+        today={@today}
+      />
+    </Layout.report_section_container>
+    <div class="mt-12">
+      <Layout.report_section_container title="Date reports">
+        <.live_component
+          module={WmcgyWeb.Components.Reports.IncomeExpenseByDate}
+          id="income_expense_by_date"
+          current_user={@current_user}
+          today={@today}
+        />
+      </Layout.report_section_container>
+    </div>
     """
   end
 end

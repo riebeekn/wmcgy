@@ -24,6 +24,40 @@ defmodule WmcgyWeb.CustomComponents do
 
   # ===========================================================================
   @doc """
+  Renders a stats section.
+  ## Examples
+  <.stats_container columns={3}>
+    <:stat label="Total Income" value="$12" />
+    <:stat label="Total Expenses" value="$14" text_color="text-red-700" />
+  </.stats_container>
+  """
+  attr :columns, :integer, required: true
+
+  slot :stat, required: true do
+    attr :label, :string
+    attr :value, :string
+    attr :text_color, :string
+  end
+
+  def stats_container(assigns) do
+    ~H"""
+    <div>
+      <dl class={"mt-4 grid grid-cols-1 gap-5 sm:grid-cols-#{@columns}"}>
+        <%= for stat <- @stat do %>
+          <div class="bg-white px-4 py-5 sm:p-6">
+            <dt class="truncate text-sm font-semibold text-gray-900"><%= stat.label %></dt>
+            <dd class={"mt-1 text-3xl font-semibold tracking-tight #{Map.get(stat, :text_color, "text-gray-900")}"}>
+              <%= stat.value %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+    """
+  end
+
+  # ===========================================================================
+  @doc """
   Renders the logo.
   ## Examples
     <.logo />
@@ -99,6 +133,29 @@ defmodule WmcgyWeb.CustomComponents do
   attr :type, :string, required: true
   attr :data_changed_event, :atom, default: nil
 
+  def chart(%{type: "pie"} = assigns) do
+    assigns =
+      assigns
+      |> assign_new(:chart_data, fn -> [] end)
+      |> assign(:hook, hook_from_type(assigns))
+
+    ~H"""
+    <.chart_title title={@title} />
+    <div class="p-2 flex justify-center">
+      <div>
+        <canvas
+          id={@id}
+          phx-hook={@hook}
+          phx-update="ignore"
+          data-changed-event={@data_changed_event}
+          data-chart-data={Jason.encode!(@chart_data)}
+        >
+        </canvas>
+      </div>
+    </div>
+    """
+  end
+
   def chart(assigns) do
     assigns =
       assigns
@@ -106,14 +163,23 @@ defmodule WmcgyWeb.CustomComponents do
       |> assign(:hook, hook_from_type(assigns))
 
     ~H"""
-    <canvas
-      id={@id}
-      phx-hook={@hook}
-      phx-update="ignore"
-      data-changed-event={@data_changed_event}
-      data-chart-data={Jason.encode!(@chart_data)}
-    >
-    </canvas>
+    <.chart_title title={@title} />
+    <div class="p-2">
+      <canvas
+        id={@id}
+        phx-hook={@hook}
+        phx-update="ignore"
+        data-changed-event={@data_changed_event}
+        data-chart-data={Jason.encode!(@chart_data)}
+      >
+      </canvas>
+    </div>
+    """
+  end
+
+  defp chart_title(assigns) do
+    ~H"""
+    <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-gray-900"><%= @title %></h3>
     """
   end
 
