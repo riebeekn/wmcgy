@@ -9,7 +9,7 @@ defmodule WmcgyWeb.UserRegistrationLive do
     <div class="py-24 px-6 sm:px-6 sm:py-32 lg:px-8">
       <div class="mx-auto max-w-md text-center space-y-8">
         <.logo />
-        <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
+        <h2 class="mt-2 text-center text-3xl font-extrabold text-zinc-900">
           Sorry we aren't accepting new registrations right now!
         </h2>
       </div>

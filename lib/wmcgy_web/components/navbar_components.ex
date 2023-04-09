@@ -46,9 +46,9 @@ defmodule WmcgyWeb.NavbarComponents do
         <.mobile_menu_link link_text="Categories" href={~p"/categories"} />
         <.mobile_menu_link link_text="Reports" href={~p"/reports"} />
       </div>
-      <div class="pt-4 pb-3 border-t border-gray-700">
+      <div class="pt-4 pb-3 border-t border-zinc-700">
         <div class="px-2">
-          <div class="text-sm font-medium text-gray-500"><%= @current_user.email %></div>
+          <div class="text-sm font-medium text-zinc-500"><%= @current_user.email %></div>
         </div>
         <div class="mt-3 px-2 space-y-1">
           <.mobile_menu_link link_text="Account" href={~p"/users/settings"} />
@@ -142,7 +142,7 @@ defmodule WmcgyWeb.NavbarComponents do
       href={@href}
       role="menuitem"
       tabindex="-1"
-      class="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+      class="hover:bg-zinc-100 block px-4 py-2 text-sm text-zinc-700"
       {@rest}
     >
       <%= @link_text %>
@@ -159,7 +159,7 @@ defmodule WmcgyWeb.NavbarComponents do
     ~H"""
     <.link
       href={@href}
-      class="text-gray-800 hover:bg-emerald-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+      class="text-zinc-800 hover:bg-emerald-600 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
       {@rest}
     >
       <%= @link_text %>
@@ -216,7 +216,7 @@ defmodule WmcgyWeb.NavbarComponents do
         phx-click-away={hide_mobile_menu()}
         phx-click={toggle_mobile_menu()}
         type="button"
-        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+        class="inline-flex items-center justify-center rounded-md p-2 text-zinc-400 hover:bg-zinc-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
         aria-controls="mobile-menu"
         aria-expanded="false"
       >

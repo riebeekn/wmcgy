@@ -118,7 +118,7 @@ defmodule WmcgyWeb.TransactionLive.Import do
   defp import_card(assigns) do
     ~H"""
     <div class="px-4 py-5 sm:p-6" data-role={@role}>
-      <dt class="text-base font-normal text-gray-900"><%= @title %></dt>
+      <dt class="text-base font-normal text-zinc-900"><%= @title %></dt>
       <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
         <div class={"flex items-center text-2xl font-semibold #{import_card_primary_text_color(@style)}"}>
           <%= @count %>

@@ -16,7 +16,7 @@ defmodule WmcgyWeb.CustomComponents do
   """
   def flex_container(assigns) do
     ~H"""
-    <div class="sm:flex justify-between items-center border-b-2 border-gray-100 pt-6 md:space-x-10">
+    <div class="sm:flex justify-between items-center border-b-2 border-zinc-100 pt-6 md:space-x-10">
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -45,8 +45,8 @@ defmodule WmcgyWeb.CustomComponents do
       <dl class={"mt-4 grid grid-cols-1 gap-5 md:grid-cols-#{@columns}"}>
         <%= for stat <- @stat do %>
           <div class="bg-white px-4 py-5 sm:p-6">
-            <dt class="truncate text-sm font-semibold text-gray-900"><%= stat.label %></dt>
-            <dd class={"mt-1 text-3xl font-semibold tracking-tight #{Map.get(stat, :text_color, "text-gray-900")}"}>
+            <dt class="truncate text-sm font-semibold text-zinc-900"><%= stat.label %></dt>
+            <dd class={"mt-1 text-3xl font-semibold tracking-tight #{Map.get(stat, :text_color, "text-zinc-900")}"}>
               <%= stat.value %>
             </dd>
           </div>
@@ -100,7 +100,7 @@ defmodule WmcgyWeb.CustomComponents do
     ~H"""
     <div class="bg-emerald-200">
       <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-24 lg:px-8">
-        <h2 class="text-3xl space-y-1 font-extrabold tracking-tight text-gray-900 md:text-4xl">
+        <h2 class="text-3xl space-y-1 font-extrabold tracking-tight text-zinc-900 md:text-4xl">
           <span class="block">
             <%= render_slot(@inner_block) %>
           </span>
@@ -179,7 +179,7 @@ defmodule WmcgyWeb.CustomComponents do
 
   defp chart_title(assigns) do
     ~H"""
-    <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-gray-900"><%= @title %></h3>
+    <h3 class="mt-4 ml-6 truncate text-sm font-semibold text-zinc-900"><%= @title %></h3>
     """
   end
 
@@ -235,14 +235,14 @@ defmodule WmcgyWeb.CustomComponents do
       class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5"
     >
       <div class="mt-1 sm:mt-0 sm:col-span-2">
-        <div class="max-w-2xl flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+        <div class="max-w-2xl flex justify-center px-6 pt-5 pb-6 border-2 border-zinc-300 border-dashed rounded-md">
           <div class="space-y-1 text-center">
             <WmcgyWeb.CoreComponents.icon
               name="hero-document-arrow-up"
-              class="mx-auto h-12 w-12 text-gray-400"
+              class="mx-auto h-12 w-12 text-zinc-400"
             />
 
-            <div class="flex text-sm text-gray-600">
+            <div class="flex text-sm text-zinc-600">
               <label
                 for={@uploads.transaction_data.ref}
                 class="relative cursor-pointer font-medium text-green-700 hover:text-green-600"
@@ -253,7 +253,7 @@ defmodule WmcgyWeb.CustomComponents do
               </label>
               <p class="pl-1">or drag and drop</p>
             </div>
-            <p class="text-xs text-gray-500">
+            <p class="text-xs text-zinc-500">
               CSV, TXT up to 8MB
             </p>
           </div>
@@ -263,8 +263,8 @@ defmodule WmcgyWeb.CustomComponents do
     <!-- selected file -->
     <%= for entry <- @uploads.transaction_data.entries do %>
       <div data-role="file-path-preview" class="pt-3 flex text-sm font-medium">
-        <div class="text-gray-500">Selected file:</div>
-        <div class="text-gray-900 ml-2"><%= entry.client_name %></div>
+        <div class="text-zinc-500">Selected file:</div>
+        <div class="text-zinc-900 ml-2"><%= entry.client_name %></div>
       </div>
     <% end %>
     """
@@ -322,9 +322,9 @@ defmodule WmcgyWeb.CustomComponents do
     <div id={@id} class="flex flex-col mt-4">
       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table class="table-fixed min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+          <div class="shadow overflow-hidden border-b border-zinc-200 sm:rounded-lg">
+            <table class="table-fixed min-w-full divide-y divide-zinc-200">
+              <thead class="bg-zinc-50">
                 <tr>
                   <%= for col <- @col do %>
                     <.table_column_header
@@ -341,12 +341,12 @@ defmodule WmcgyWeb.CustomComponents do
                 <%= for {row, row_index} <- Enum.with_index @rows do %>
                   <tr
                     id={"#{@id}-row-#{Map.get(row, :id, row_index)}"}
-                    class={if rem(row_index, 2) == 0, do: "bg-white", else: "bg-gray-50"}
+                    class={if rem(row_index, 2) == 0, do: "bg-white", else: "bg-zinc-50"}
                   >
                     <%= for {col, col_index} <- Enum.with_index @col do %>
                       <td
                         id={"#{@id}-row-#{Map.get(row, :id, row_index)}-col-#{col_index}"}
-                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900"
                       >
                         <%= render_slot(col, row) %>
                       </td>
@@ -360,7 +360,7 @@ defmodule WmcgyWeb.CustomComponents do
                     <%= for {fcol, f_index} <- Enum.with_index @footer_col do %>
                       <td
                         id={"#{@id}-footer-col-#{f_index}"}
-                        class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 uppercase"
+                        class="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-900 uppercase"
                       >
                         <%= render_slot(fcol) %>
                       </td>
@@ -422,7 +422,7 @@ defmodule WmcgyWeb.CustomComponents do
     ~H"""
     <th
       scope="col"
-      class={"#{@col[:col_width]} px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"}
+      class={"#{@col[:col_width]} px-6 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider"}
     >
       <%= @col.label %>
     </th>

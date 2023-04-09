@@ -361,7 +361,7 @@ defmodule WmcgyWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+        class="mt-1 block w-full py-2 px-3 border border-zinc-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -400,7 +400,7 @@ defmodule WmcgyWeb.CoreComponents do
       <.label for={@id}><%= @label %></.label>
       <div class="relative mt-2 rounded-md shadow-sm">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <span class="text-gray-500 sm:text-sm">$</span>
+          <span class="text-zinc-500 sm:text-sm">$</span>
         </div>
         <input
           type="number"

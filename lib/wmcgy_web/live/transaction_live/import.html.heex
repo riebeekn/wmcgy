@@ -19,7 +19,7 @@
 <!-- import progress -->
 <%= if @import_progress do %>
   <.spinner message={status_text(@import_status)} animate?={@import_status == :importing} />
-  <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-4 md:divide-y-0 md:divide-x">
+  <dl class="mt-5 grid grid-cols-1 divide-y divide-zinc-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-4 md:divide-y-0 md:divide-x">
     <.import_card
       role="new_transactions"
       title="New Transactions"

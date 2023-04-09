@@ -19,10 +19,10 @@ defmodule WmcgyWeb.Components.MtdYtdWidget do
     <div class="my-4 sm:my-0 bg-white rounded-lg shadow-md p-4 max-w-xs sm:max-w-sm">
       <h3 class="font-semibold text-emerald-800">Current income versus expenses</h3>
       <div id="mtd">
-        <span class="text-gray-500 tracking-wide">MTD: </span><span class={"font-medium #{highlight_if_loss(@mtd || "")}"}><%= @mtd |> maybe_to_currency() %></span>
+        <span class="text-zinc-500 tracking-wide">MTD: </span><span class={"font-medium #{highlight_if_loss(@mtd || "")}"}><%= @mtd |> maybe_to_currency() %></span>
       </div>
       <div id="ytd">
-        <span class="text-gray-500 tracking-wide">YTD: </span><span class={"font-medium #{highlight_if_loss(@ytd || "")}"}><%= @ytd |> maybe_to_currency() %></span>
+        <span class="text-zinc-500 tracking-wide">YTD: </span><span class={"font-medium #{highlight_if_loss(@ytd || "")}"}><%= @ytd |> maybe_to_currency() %></span>
       </div>
     </div>
     """

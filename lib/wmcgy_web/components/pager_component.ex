@@ -15,32 +15,32 @@ defmodule WmcgyWeb.PagerComponent do
             phx-click="previous_page"
             phx-target={@myself}
             type="button"
-            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600"
+            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-zinc-300 bg-white text-sm font-medium text-zinc-500 hover:bg-zinc-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600"
           >
             <span class="sr-only">Previous</span>
             <WmcgyWeb.CoreComponents.icon
               name="hero-arrow-long-left"
-              class="mr-1 h-5 w-5 text-gray-400"
+              class="mr-1 h-5 w-5 text-zinc-400"
             /> Prev
           </button>
           <button
             phx-click="next_page"
             phx-target={@myself}
             type="button"
-            class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600"
+            class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-zinc-300 bg-white text-sm font-medium text-zinc-500 hover:bg-zinc-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-emerald-600 focus:border-emerald-600"
           >
             <span class="sr-only">Next</span>
             Next
             <WmcgyWeb.CoreComponents.icon
               name="hero-arrow-long-right"
-              class="ml-1 h-5 w-5 text-gray-400"
+              class="ml-1 h-5 w-5 text-zinc-400"
             />
           </button>
         </span>
       </div>
       <div class="flex mt-2 sm:mt-0 sm:justify-end">
         <div>
-          <p class="text-sm text-gray-700">
+          <p class="text-sm text-zinc-700">
             Showing
             <span class="font-medium">
               <%= first_item_being_displayed(
