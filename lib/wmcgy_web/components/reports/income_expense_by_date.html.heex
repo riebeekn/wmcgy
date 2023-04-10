@@ -47,7 +47,7 @@
       />
 
       <%= if Enum.count(@income_expense_table_data) > 0 do %>
-        <div id="income-expense-details">
+        <div id="income-expense-details" class="hidden xs:block">
           <.custom_table
             id="income_expense_table_data"
             rows={@income_expense_table_data}
@@ -72,6 +72,28 @@
               <%= @expense_total |> Currency.number_to_currency() %>
             </:footer_col>
           </.custom_table>
+        </div>
+        <div class="block xs:hidden">
+          <.data_list id="income-expense-details-list" rows={@income_expense_table_data}>
+            <:list_item :let={income_expense} style="text-sm font-medium text-gray-900">
+              <%= month_or_year_label(income_expense) %>
+            </:list_item>
+            <:list_item :let={income_expense} label="Income">
+              <%= income_expense.income |> Currency.number_to_currency() %>
+            </:list_item>
+            <:list_item :let={income_expense} label="Expenses">
+              <%= income_expense.expense |> Currency.number_to_currency() %>
+            </:list_item>
+            <:footer_item style="text-sm font-medium text-gray-900 uppercase">
+              Total
+            </:footer_item>
+            <:footer_item>
+              Income: <%= @income_total |> Currency.number_to_currency() %>
+            </:footer_item>
+            <:footer_item>
+              Expenses: <%= @expense_total |> Currency.number_to_currency() %>
+            </:footer_item>
+          </.data_list>
         </div>
       <% end %>
     </Layout.report_details_left_column_container>

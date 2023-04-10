@@ -141,7 +141,7 @@ defmodule WmcgyWeb.CustomComponents do
 
     ~H"""
     <.chart_title title={@title} />
-    <div class="p-2 flex justify-center">
+    <div class="flex justify-center">
       <div>
         <canvas
           id={@id}
@@ -164,7 +164,7 @@ defmodule WmcgyWeb.CustomComponents do
 
     ~H"""
     <.chart_title title={@title} />
-    <div class="p-2">
+    <div class="sm:p-2">
       <canvas
         id={@id}
         phx-hook={@hook}
@@ -273,6 +273,53 @@ defmodule WmcgyWeb.CustomComponents do
   defp friendly_error(:too_large), do: "File too large, max file size is 8MB."
   defp friendly_error(:too_many_files), do: "Too many files."
   defp friendly_error(:not_accepted), do: "Unacceptable file type, only txt / csv allowed."
+
+  # ===========================================================================
+  @doc """
+  Renders a data list.
+  ## Examples
+
+  <.data_list id="users" rows={@user}>
+    <:list_item :let={user} style="text-sm font-medium text-gray-900">
+      <%= user.name %>
+    </:list_item>
+  </.data_list>
+  """
+  attr :id, :string, required: true
+  attr :rows, :list, required: true
+
+  slot :list_item, required: true do
+    attr :label, :string
+    attr :style, :string
+  end
+
+  slot :footer_item do
+    attr :style, :string
+  end
+
+  def data_list(assigns) do
+    ~H"""
+    <ul id={@id}>
+      <%= for row <- @rows do %>
+        <li class="px-4 pb-2">
+          <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+          <%= for list_item <- @list_item do %>
+            <p class={Map.get(list_item, :style, "text-sm text-gray-500")}>
+              <%= Map.get(list_item, :label, "") %><%= render_slot(list_item, row) %>
+            </p>
+          <% end %>
+        </li>
+      <% end %>
+      <li class="bg-emerald-50 px-4 py-2">
+        <%= for footer_item <- @footer_item do %>
+          <p class={Map.get(footer_item, :style, "text-sm text-gray-500")}>
+            <%= render_slot(footer_item) %>
+          </p>
+        <% end %>
+      </li>
+    </ul>
+    """
+  end
 
   # ===========================================================================
   @doc """
