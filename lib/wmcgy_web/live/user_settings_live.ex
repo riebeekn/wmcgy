@@ -50,7 +50,12 @@ defmodule WmcgyWeb.UserSettingsLive do
         phx-submit="update_password"
         phx-trigger-action={@trigger_submit}
       >
-        <.input field={@password_form[:email]} type="hidden" value={@current_email} />
+        <.input
+          id="user_email_for_password"
+          field={@password_form[:email]}
+          type="hidden"
+          value={@current_email}
+        />
         <.input field={@password_form[:password]} type="password" label="New password" required />
         <.input
           field={@password_form[:password_confirmation]}
