@@ -74,7 +74,8 @@ defmodule Wmcgy.MixProject do
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.16", only: [:dev, :test]},
-      {:html_sanitize_ex, "~> 1.4", only: :test}
+      {:html_sanitize_ex, "~> 1.4", only: :test},
+      {:sobelow, "~> 0.12", only: [:dev, :test], runtime: false}
     ]
   end
 
