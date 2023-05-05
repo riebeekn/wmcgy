@@ -42,6 +42,7 @@ defmodule WmcgyWeb.Router do
 
       live_dashboard "/dashboard", metrics: WmcgyWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+      forward("/gallery", Wmcgy.Emails.Gallery)
     end
   end
 
