@@ -5,7 +5,7 @@ defmodule Wmcgy do
   """
   use Boundary,
     deps: [WmcgySchema, WmcgyUtilities],
-    exports: [Accounts, Accounts.User, TransactionImport.ImportProgress]
+    exports: [Accounts, Accounts.User, Emails.Gallery, TransactionImport.ImportProgress]
 
   alias Wmcgy.Accounts.User
   alias Wmcgy.Reports.CategoryReport
