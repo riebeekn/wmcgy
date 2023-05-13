@@ -117,10 +117,10 @@ defmodule Wmcgy.Mailer do
                 <p style="Margin:0; padding-bottom:10px; font-size:10px; line-height:15px; Margin-bottom:10px; color:#111111; font-family: 'Open Sans', 'Raleway', Arial, Helvetica, sans-serif;">
                   We only send emails to individuals who have registered at our site:
                   <a
-                    href="http://www.wheredidmycashgoyo.com/"
+                    href="https://wheredidmycashgoyo.com/"
                     style="color:#111111; text-decoration:underline;"
                   >
-                    www.wheredidmycashgoyo.com.com
+                    www.wheredidmycashgoyo.com
                   </a>
                 </p>
               </mj-text>
