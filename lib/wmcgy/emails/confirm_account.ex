@@ -30,6 +30,7 @@ defmodule Wmcgy.Emails.ConfirmAccount do
     """
   end
 
+  # coveralls-ignore-start
   def preview do
     new_email(%{email: "bob@example.com"}, "https://example.com/confirm_account_link")
   end
@@ -41,4 +42,6 @@ defmodule Wmcgy.Emails.ConfirmAccount do
       tags: [category: "Accounts"]
     ]
   end
+
+  # coveralls-ignore-stop
 end

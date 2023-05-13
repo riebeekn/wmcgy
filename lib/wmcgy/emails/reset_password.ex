@@ -30,6 +30,7 @@ defmodule Wmcgy.Emails.ResetPassword do
     """
   end
 
+  # coveralls-ignore-start
   def preview do
     new_email(%{email: "bob@example.com"}, "https://example.com/reset_password_link")
   end
@@ -41,4 +42,6 @@ defmodule Wmcgy.Emails.ResetPassword do
       tags: [category: "Accounts"]
     ]
   end
+
+  # coveralls-ignore-stop
 end
