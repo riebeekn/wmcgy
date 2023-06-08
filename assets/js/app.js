@@ -29,10 +29,21 @@ import PieChart from "./pie-chart";
 let Hooks = {};
 Hooks.DatePicker = {
   mounted() {
-    flatpickr(this.el, {
+    this.pickr = flatpickr(this.el, {
       dateFormat: "M d, Y",
     });
   },
+  updated() {
+    this.pickr.destroy()
+    document.querySelectorAll('[phx-hook="DatePicker"]').forEach((item) => {
+      item.pickr = flatpickr(item, {
+        dateFormat: "M d, Y",
+      });
+    });
+  },
+  destroyed() {
+    this.pickr.destroy()
+  }
 };
 
 Hooks.PieChart = {
