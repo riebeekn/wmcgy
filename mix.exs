@@ -74,7 +74,7 @@ defmodule Wmcgy.MixProject do
        git: "https://github.com/riebeekn/swoosh_gallery.git", branch: "add-dialyzer"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: [:dev, :test], runtime: false},
-      {:boundary, "~> 0.9.0", runtime: false},
+      {:boundary, "~> 0.10.0", runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false},
