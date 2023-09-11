@@ -1,6 +1,6 @@
 %{
   "bcrypt_elixir": {:hex, :bcrypt_elixir, "3.1.0", "0b110a9a6c619b19a7f73fa3004aa11d6e719a67e672d1633dc36b6b2290a0f7", [:make, :mix], [{:comeonin, "~> 5.3", [hex: :comeonin, repo: "hexpm", optional: false]}, {:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "2ad2acb5a8bc049e8d5aa267802631912bb80d5f4110a178ae7999e69dca1bf7"},
-  "boundary": {:hex, :boundary, "0.10.0", "1cc1562de735f6667e7bfa609f292956ac14d7a74547a12827bc7319ff81ad3f", [:mix], [], "hexpm", "c78eee15069b2ab1cf8b57c43e471255e72d5a9082b9525eb5f4fc00c626228b"},
+  "boundary": {:hex, :boundary, "0.10.1", "4228e788754ff81a51bec30358095fc6739114ba0e99241a642fef4db6d52e05", [:mix], [], "hexpm", "4019d56c806766e2c467ae12a1dbe60e183373af69c32cc6d1f87d9e0b4c59e5"},
   "bunt": {:hex, :bunt, "0.2.1", "e2d4792f7bc0ced7583ab54922808919518d0e57ee162901a16a1b6664ef3b14", [:mix], [], "hexpm", "a330bfb4245239787b15005e66ae6845c9cd524a288f0d141c148b02603777a5"},
   "castore": {:hex, :castore, "1.0.3", "7130ba6d24c8424014194676d608cb989f62ef8039efd50ff4b3f33286d06db8", [:mix], [], "hexpm", "680ab01ef5d15b161ed6a95449fac5c6b8f60055677a8e79acf01b27baa4390b"},
   "certifi": {:hex, :certifi, "2.12.0", "2d1cca2ec95f59643862af91f001478c9863c2ac9cb6e2f89780bfd8de987329", [:rebar3], [], "hexpm", "ee68d85df22e554040cdb4be100f33873ac6051387baf6a8f6ce82272340ff1c"},
