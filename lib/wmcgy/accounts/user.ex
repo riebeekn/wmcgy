@@ -1,4 +1,5 @@
 defmodule Wmcgy.Accounts.User do
+  use Boundary
   use Ecto.Schema
   import Ecto.Changeset
 
