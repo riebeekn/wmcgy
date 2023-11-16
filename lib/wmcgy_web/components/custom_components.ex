@@ -248,7 +248,7 @@ defmodule WmcgyWeb.CustomComponents do
                 class="relative cursor-pointer font-medium text-green-700 hover:text-green-600"
               >
                 <span>Upload a file</span>
-                <%= live_file_input(@uploads.transaction_data, class: "sr-only") %>
+                <.live_file_input upload={@uploads.transaction_data} class="sr-only" />
                 <input id="file-upload" name="file-upload" type="file" class="sr-only" />
               </label>
               <p class="pl-1">or drag and drop</p>
