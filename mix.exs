@@ -68,7 +68,7 @@ defmodule Wmcgy.MixProject do
       {:datix, "~> 0.3"},
       {:nimble_csv, "~> 1.2"},
       {:premailex, "~> 0.3.0"},
-      {:mjml, "~> 1.5.0"},
+      {:mjml, "~> 3.0.0"},
       {:swoosh_gallery, "~> 0.2.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.14", only: [:dev, :test], runtime: false},
