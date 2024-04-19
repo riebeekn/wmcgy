@@ -45,13 +45,13 @@ defmodule WmcgyUtilities.ParamsTest do
 
   describe "keys/0 - Transaction" do
     test "returns transaction keys" do
-      assert [:amount, :category_id, :date, :description, :type] == Transaction.keys()
+      assert [:type, :date, :description, :amount, :category_id] == Transaction.keys()
     end
   end
 
   describe "keys/1 - Transaction" do
     test "returns transaction keys with external id when included in options" do
-      assert [:amount, :category_id, :date, :description, :external_id, :type] ==
+      assert [:type, :date, :description, :amount, :category_id, :external_id] ==
                Transaction.keys(include_external_id?: true)
     end
   end
