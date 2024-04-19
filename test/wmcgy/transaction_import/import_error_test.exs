@@ -27,7 +27,7 @@ defmodule Wmcgy.TransactionImport.ImportErrorTest do
       assert %ImportError{
                row_number: 132,
                message:
-                 "Amount: can't be blank, Date: can't be blank, Description: can't be blank, Id: can't be blank, Type: can't be blank"
+                 "Type: can't be blank, Date: can't be blank, Description: can't be blank, Amount: can't be blank, Id: can't be blank"
              } == ImportError.new(changeset, 132)
     end
   end

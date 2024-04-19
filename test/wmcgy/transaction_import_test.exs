@@ -113,7 +113,7 @@ defmodule Wmcgy.TransactionImportTest do
                error_count: 4,
                errors: [
                  %ImportError{
-                   message: "Amount: can't be blank, Date: can't be blank, Id: can't be blank",
+                   message: "Date: can't be blank, Amount: can't be blank, Id: can't be blank",
                    row_number: 3
                  },
                  %ImportError{message: "Category name: can't be blank", row_number: 10},

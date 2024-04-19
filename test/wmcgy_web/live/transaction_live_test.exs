@@ -572,7 +572,7 @@ defmodule WmcgyWeb.TransactionLiveTest do
       assert has_element?(
                view,
                "#import_errors-row-0-col-1",
-               "Amount: can't be blank, Date: can't be blank, Id: can't be blank"
+               "Date: can't be blank, Amount: can't be blank, Id: can't be blank"
              )
 
       assert has_element?(view, "#import_errors-row-0-col-2", "Not imported")
