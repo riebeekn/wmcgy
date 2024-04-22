@@ -3,7 +3,13 @@
     <.icon name="hero-arrow-left" /> Back to Transactions
   </.link>
   <div class="max-w-lg">
-    <.simple_form for={@form} id="transaction-form" phx-target={@myself} phx-submit="save">
+    <.simple_form
+      for={@form}
+      id="transaction-form"
+      phx-target={@myself}
+      phx-submit="save"
+      phx-change="validate"
+    >
       <div class="flex space-x-8">
         <.input
           field={@form[:type]}

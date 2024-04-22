@@ -5,6 +5,7 @@ defmodule WmcgyWeb.CategoryLive.FormComponent do
   use WmcgyWeb, :live_component
 
   alias Ecto.Changeset
+  alias WmcgySchema.Category
   alias WmcgyUtilities.Params
 
   # ===========================================================================
@@ -24,6 +25,18 @@ defmodule WmcgyWeb.CategoryLive.FormComponent do
   @impl true
   def handle_event("save", %{"category" => category_params}, socket) do
     save_category(socket, socket.assigns.action, category_params)
+  end
+
+  # ===========================================================================
+  # auto-recover on LV disconnect/reconnect
+  # see: https://fly.io/phoenix-files/how-phoenix-liveview-form-auto-recovery-works
+  @impl true
+  def handle_event("validate", %{"category" => category_params}, socket) do
+    changeset =
+      %Category{}
+      |> Changeset.cast(category_params, Params.Category.keys())
+
+    {:noreply, assign_form(socket, changeset)}
   end
 
   # ===========================================================================

@@ -3,7 +3,13 @@
     <%= @title %>
   </.header>
 
-  <.simple_form for={@form} id="category-form" phx-target={@myself} phx-submit="save">
+  <.simple_form
+    for={@form}
+    id="category-form"
+    phx-target={@myself}
+    phx-submit="save"
+    phx-change="validate"
+  >
     <.input field={@form[:name]} type="text" label="Name" />
     <:actions>
       <.button phx-disable-with="Saving...">Save Category</.button>

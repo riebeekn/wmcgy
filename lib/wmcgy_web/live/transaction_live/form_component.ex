@@ -5,6 +5,7 @@ defmodule WmcgyWeb.TransactionLive.FormComponent do
   use WmcgyWeb, :live_component
 
   alias Ecto.Changeset
+  alias WmcgySchema.Transaction
   alias WmcgyUtilities.Params
 
   # ===========================================================================
@@ -78,6 +79,18 @@ defmodule WmcgyWeb.TransactionLive.FormComponent do
       {:error, %Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
     end
+  end
+
+  # ===========================================================================
+  # auto-recover on LV disconnect/reconnect
+  # see: https://fly.io/phoenix-files/how-phoenix-liveview-form-auto-recovery-works
+  @impl true
+  def handle_event("validate", %{"transaction" => transaction_params}, socket) do
+    changeset =
+      %Transaction{}
+      |> Changeset.cast(transaction_params, Params.Transaction.keys())
+
+    {:noreply, assign_form(socket, changeset)}
   end
 
   # ===========================================================================
