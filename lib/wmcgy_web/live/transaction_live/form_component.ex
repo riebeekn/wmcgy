@@ -39,7 +39,7 @@ defmodule WmcgyWeb.TransactionLive.FormComponent do
             {:noreply,
              socket
              |> put_flash(:info, "Transaction created")
-             |> push_redirect(to: ~p"/transactions")}
+             |> push_navigate(to: ~p"/transactions")}
 
           {:error, %Ecto.Changeset{} = changeset} ->
             {:noreply, assign_form(socket, changeset)}
@@ -70,7 +70,7 @@ defmodule WmcgyWeb.TransactionLive.FormComponent do
             {:noreply,
              socket
              |> put_flash(:info, "Transaction updated")
-             |> push_redirect(to: ~p"/transactions")}
+             |> push_navigate(to: ~p"/transactions")}
 
           {:error, %Ecto.Changeset{} = changeset} ->
             {:noreply, assign_form(socket, changeset)}

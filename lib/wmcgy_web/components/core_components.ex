@@ -10,8 +10,9 @@ defmodule WmcgyWeb.CoreComponents do
   """
   use Phoenix.Component
 
+  use Gettext, backend: WmcgyWeb.Gettext
+
   alias Phoenix.LiveView.JS
-  import WmcgyWeb.Gettext
 
   @doc """
   Renders a modal.

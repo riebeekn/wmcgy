@@ -44,8 +44,9 @@ defmodule WmcgyWeb do
         formats: [:html, :json],
         layouts: [html: WmcgyWeb.Layouts]
 
+      use Gettext, backend: WmcgyWeb.Gettext
+
       import Plug.Conn
-      import WmcgyWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -83,11 +84,11 @@ defmodule WmcgyWeb do
 
   defp html_helpers do
     quote do
+      use Gettext, backend: WmcgyWeb.Gettext
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
       import WmcgyWeb.CoreComponents
-      import WmcgyWeb.Gettext
       # Custom UI components
       import WmcgyWeb.CustomComponents
 
