@@ -41,3 +41,9 @@ npm-debug.log
 # Ignore dialyzer stuff
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
+
+# terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
