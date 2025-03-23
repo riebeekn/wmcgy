@@ -62,7 +62,8 @@ config :phoenix, :json_library, Jason
 # Set env
 config :wmcgy, env: Mix.env()
 
-# TZ config
+# TZ config... disable autoupdate, getting OOM errors on fly during update
+config :tzdata, :autoupdate, :disabled
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 # Import environment specific config. This must remain at the bottom
